@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // Lightweight in-memory bridge for Hotspot/Offline play.
 // Allows normal tabs, incognito windows, and LAN/Wi-Fi devices to share local room state
@@ -112,6 +113,43 @@ export default defineConfig({
     react(),
     tailwindcss(),
     hotspotSyncPlugin(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.png', 'pwa-192x192.png', 'pwa-512x512.png'],
+      manifest: {
+        name: 'PurseWar - IPL Auction Simulator',
+        short_name: 'PurseWar',
+        description: 'Host live multiplayer IPL auctions, bid with friends, and build your dream squad.',
+        theme_color: '#090807',
+        background_color: '#090807',
+        display: 'standalone',
+        orientation: 'any',
+        scope: '/',
+        start_url: '/',
+        icons: [
+          {
+            src: '/pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: '/pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+          {
+            src: '/pwa-maskable-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable',
+          },
+        ],
+      },
+      workbox: {
+        globPatterns: ['**/*.{css,html,ico,js,json,mp3,mpeg,png,svg,woff2}'],
+        maximumFileSizeToCacheInBytes: 2 * 1024 * 1024,
+      },
+    }),
   ],
   server: {
     host: true, // Listen on all network interfaces so hotspot peers can connect

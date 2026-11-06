@@ -42,6 +42,7 @@ import {
   Clock,
 } from "lucide-react";
 import GithubStarButton from "../components/GithubStarButton";
+import PWAInstallButton from "../components/PWAInstallButton";
 import BuyMeACoffee from "../components/BuyMeACoffee";
 import ConfirmDialog from "../components/ConfirmDialog";
 import AuctionActivityFeed from "../components/AuctionActivityFeed";
@@ -602,6 +603,7 @@ const LandingPage = () => {
               ③ Start Bidding
             </span>
           </div>
+          <PWAInstallButton />
           <div className="mt-5 sm:mt-7 flex flex-col items-center gap-2.5">
             <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.3em] text-gray-500">
               Ten franchises. One auction floor.
@@ -822,6 +824,7 @@ const LandingPage = () => {
             ③ Start Bidding
           </span>
         </div>
+        <PWAInstallButton />
         <div className="mt-5 sm:mt-7 flex flex-col items-center gap-2.5">
           <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.3em] text-gray-500">
             Ten franchises. One auction floor.
