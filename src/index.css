@@ -1,0 +1,544 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system;
+  --color-ipl-blue: #17120f;
+  --color-ipl-gold: #f3b95f;
+  --color-ipl-dark: #090807;
+}
+
+/* Desktop compact mode: the 125% browser-zoom view (roughly 1200px CSS wide)
+   and narrow laptops land below 1280px. From 1280px up the room keeps the
+   original desktop layout. Mobile (<768px) keeps its own sizing. */
+@custom-variant compact (@media (min-width: 768px) and (max-width: 1279.98px));
+
+/* ── Mobile-safe full viewport height ───────────────────────────────────────
+   Uses the dynamic viewport height (dvh) so bottom-fixed chrome such as the
+   auction room's mobile nav bar stays visible when mobile browsers show/hide
+   their URL toolbar. Falls back to 100vh on browsers without dvh support.    */
+@utility h-screen-safe {
+  height: 100vh;
+
+  @supports (height: 100dvh) {
+    height: 100dvh;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: #090807;
+  background-image:
+    radial-gradient(ellipse at 50% -20%, rgba(118, 66, 34, 0.19), transparent 58%),
+    linear-gradient(180deg, #0d0a08 0%, #080807 100%);
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  /* Prevent horizontal bounce and enable smooth scrolling */
+  overscroll-behavior-y: none;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.arena-canvas {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
+  background-color: #090807 !important;
+  background-image:
+    linear-gradient(180deg, #0d0a08 0%, #090807 56%, #080a08 100%) !important;
+}
+
+.arena-canvas::before,
+.arena-canvas::after {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+}
+
+.arena-canvas::before {
+  background:
+    radial-gradient(ellipse 48% 32% at 50% -8%, rgba(237, 139, 68, 0.2), transparent 75%),
+    radial-gradient(ellipse 56% 24% at 50% 104%, rgba(39, 100, 54, 0.2), transparent 72%),
+    radial-gradient(ellipse 19% 23% at 7% 18%, rgba(255, 218, 154, 0.2), transparent 72%),
+    radial-gradient(ellipse 19% 23% at 93% 18%, rgba(255, 218, 154, 0.2), transparent 72%),
+    linear-gradient(108deg, transparent 8%, rgba(248, 203, 151, 0.055) 15%, transparent 27%),
+    linear-gradient(252deg, transparent 73%, rgba(248, 203, 151, 0.055) 85%, transparent 92%);
+}
+
+.arena-canvas::after {
+  opacity: 0.82;
+  background:
+    radial-gradient(ellipse 56% 24% at 50% 108%, rgba(86, 145, 60, 0.62), rgba(42, 91, 43, 0.38) 54%, transparent 78%),
+    radial-gradient(ellipse 5% 2.4% at 50% 106%, rgba(180, 161, 111, 0.24), transparent 85%),
+    radial-gradient(ellipse 56% 24% at 50% 108%, transparent 0 71%, rgba(192, 205, 143, 0.32) 71.2% 71.55%, transparent 71.9%),
+    radial-gradient(ellipse at 50% 132%, transparent 0 40%, rgba(239, 177, 103, 0.17) 40.2% 43.5%, transparent 43.8%),
+    radial-gradient(ellipse at 50% 132%, transparent 0 48%, rgba(245, 189, 85, 0.25) 48.15% 48.45%, rgba(182, 126, 67, 0.08) 48.7% 50.8%, transparent 51.1%),
+    radial-gradient(ellipse at 50% 132%, transparent 0 58%, rgba(232, 175, 103, 0.2) 58.15% 58.45%, rgba(182, 126, 67, 0.07) 58.7% 61%, transparent 61.3%),
+    radial-gradient(ellipse at 50% 132%, transparent 0 69%, rgba(232, 175, 103, 0.15) 69.15% 69.4%, rgba(182, 126, 67, 0.055) 69.7% 72%, transparent 72.3%),
+    radial-gradient(ellipse 2px 1.4px, rgba(255, 218, 164, 0.62) 0 55%, transparent 68%),
+    radial-gradient(ellipse 1.6px 1.2px, rgba(222, 231, 207, 0.46) 0 55%, transparent 68%);
+  background-size: auto, auto, auto, auto, auto, 28px 22px, 28px 22px;
+  background-position: center, center, center, center, center, 14px 18%, 0 7px;
+  mask-image: linear-gradient(to bottom, transparent 5%, black 18%, black 48%, transparent 63%, black 78%);
+}
+
+.arena-home {
+  isolation: isolate;
+}
+
+.arena-grid-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.075;
+  background-image:
+    linear-gradient(30deg, transparent 48.8%, rgba(224, 179, 126, 0.13) 49.4% 50%, transparent 50.6%),
+    linear-gradient(150deg, transparent 48.8%, rgba(224, 179, 126, 0.13) 49.4% 50%, transparent 50.6%),
+    linear-gradient(90deg, transparent 48.8%, rgba(224, 179, 126, 0.1) 49.4% 50%, transparent 50.6%);
+  background-size: 52px 90px;
+  mask-image: linear-gradient(to bottom, black, transparent 72%);
+}
+
+.arena-home::before {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 50%;
+  width: min(1050px, 100vw);
+  height: 420px;
+  content: "";
+  pointer-events: none;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(237, 139, 68, 0.18), transparent 48%),
+    radial-gradient(ellipse at 50% 2%, rgba(121, 65, 34, 0.2), transparent 72%);
+}
+
+.arena-auction-console {
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(243, 185, 95, 0.07), transparent 36%),
+    linear-gradient(145deg, rgba(34, 24, 18, 0.7), rgba(12, 10, 9, 0.96));
+}
+
+.arena-live-card {
+  background:
+    radial-gradient(ellipse at 50% 15%, rgba(111, 69, 37, 0.21), transparent 48%),
+    radial-gradient(ellipse at 50% 100%, rgba(28, 83, 57, 0.18), transparent 48%),
+    linear-gradient(180deg, #1a120d 0%, #100c09 58%, #0b100b 100%);
+}
+
+.arena-live-card::after {
+  position: absolute;
+  inset: 3.5rem 0 0;
+  content: "";
+  pointer-events: none;
+  opacity: 0.38;
+  background:
+    linear-gradient(90deg, transparent calc(50% - 1px), rgba(201, 220, 184, 0.1) 50%, transparent calc(50% + 1px)),
+    radial-gradient(ellipse at 50% 100%, transparent 0 34%, rgba(201, 220, 184, 0.09) 34.2% 34.5%, transparent 34.7%);
+}
+
+.auction-live-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  align-self: flex-start;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid rgba(245, 189, 85, 0.24);
+  border-radius: 0.65rem;
+  background: rgba(245, 189, 85, 0.08);
+  color: #f5bd55;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.arena-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgba(245, 189, 85, 0.25);
+  border-radius: 999px;
+  background: rgba(245, 189, 85, 0.07);
+  color: #f5bd55;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.arena-kicker::before {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f5bd55;
+  box-shadow: 0 0 12px rgba(245, 189, 85, 0.75);
+  content: "";
+}
+
+.arena-console {
+  border-color: rgba(197, 160, 112, 0.2);
+  background: linear-gradient(145deg, rgba(35, 25, 19, 0.3), rgba(12, 10, 9, 0.48));
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.42), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+}
+
+.arena-console-inner {
+  border-color: rgba(197, 160, 112, 0.16);
+  background: rgba(12, 10, 9, 0.38);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+.arena-feature-card {
+  border: 1px solid rgba(197, 160, 112, 0.16);
+  border-radius: 1.25rem;
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(245, 189, 85, 0.035), transparent 62%),
+    linear-gradient(145deg, rgba(28, 21, 16, 0.38), rgba(13, 11, 10, 0.52));
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.arena-feature-card:hover {
+  border-color: rgba(245, 189, 85, 0.32);
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(245, 189, 85, 0.055), transparent 62%),
+    linear-gradient(145deg, rgba(35, 26, 18, 0.48), rgba(13, 11, 10, 0.58));
+  transform: translateY(-2px);
+}
+
+:is(button, a)[class~="bg-[#ff5500]"],
+:is(button, a)[class~="bg-orange-500"],
+:is(button, a)[class~="bg-orange-600"] {
+  border-color: rgba(245, 189, 85, 0.56) !important;
+  background-color: #e4b253 !important;
+  color: #21170a !important;
+  box-shadow: 0 8px 24px rgba(205, 148, 55, 0.18);
+}
+
+:is(button, a)[class~="bg-[#ff5500]"]:hover,
+:is(button, a)[class~="bg-orange-500"]:hover,
+:is(button, a)[class~="bg-orange-600"]:hover {
+  background-color: #f0c66d !important;
+}
+
+:is(button, a)[class~="from-[#ff5500]"] {
+  border-color: rgba(245, 189, 85, 0.62) !important;
+  background-image: linear-gradient(115deg, #f1c66c, #cf9840) !important;
+  color: #21170a !important;
+  box-shadow: 0 8px 24px rgba(205, 148, 55, 0.2) !important;
+}
+
+:is(button, a):has([class~="from-[#ff5500]"]) > [class~="from-[#ff5500]"] {
+  background-image: linear-gradient(115deg, #f1c66c, #cf9840) !important;
+}
+
+button:has([class~="from-[#ff5500]"]) .relative {
+  color: #21170a !important;
+}
+
+button:has([class~="from-[#ff5500]"]) svg {
+  color: #21170a !important;
+  fill: #21170a !important;
+}
+
+:is(button, a)[class~="text-[#ff5500]"] {
+  color: #f2c56c !important;
+}
+
+:is(button, a)[class~="border-[#ff5500]"] {
+  border-color: rgba(245, 189, 85, 0.48) !important;
+}
+
+:is([class~="text-[#ff5500]"], [class~="text-orange-300"], [class~="text-orange-400"], [class~="text-orange-500"], [class~="text-orange-600"], [class~="text-orange-700"]) {
+  color: #f2c56c !important;
+}
+
+:is([class~="text-[#ff5500]"], [class~="text-orange-300"], [class~="text-orange-400"], [class~="text-orange-500"], [class~="text-orange-600"], [class~="text-orange-700"]):is(:hover, :focus-visible) {
+  color: #ffda8a !important;
+}
+
+:is(button, a):focus-visible {
+  outline: 2px solid #f5bd55;
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .arena-grid-layer {
+    background-size: 42px 42px;
+  }
+
+  .arena-console {
+    border-radius: 1.65rem;
+    padding: 0.5rem;
+  }
+
+}
+
+/* Global Mobile Touch Responsiveness & Instant Tap Feedback */
+button, 
+a, 
+input, 
+select, 
+textarea, 
+[role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent unwanted selection on rapid action buttons (e.g. Bid button) */
+button, .no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+* {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transform: translateZ(0);
+}
+
+/* Pixel display font — matches the loading screen wordmark.
+   Geist Pixel only ships at weight 400, so we pin the weight for crispness. */
+.font-pixel {
+  font-family: "Geist Pixel", Silkscreen, VT323, "Geist Mono", monospace;
+  font-weight: 600;
+}
+
+.ipl-text-gradient {
+  background: linear-gradient(135deg, #fff 0%, #d4af37 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Scrollbar for scrollable sections */
+.custom-scrollbar {
+  -ms-overflow-style: auto !important;
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: block !important;
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.text-premium-gradient {
+  background: linear-gradient(135deg,
+      #fff 0%,
+      #fbbf24 25%,
+      #f59e0b 50%,
+      #fbbf24 75%,
+      #fff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 5s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.glass-premium {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 4px 24px -1px rgba(0, 0, 0, 0.2),
+    inset 0 0 20px 0 rgba(255, 255, 255, 0.02);
+  transform: translateZ(0);
+}
+
+.animate-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s ease-in-out infinite;
+}
+
+@keyframes pulse-slow {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1) translate(-50%, -50%);
+  }
+
+  50% {
+    opacity: 0.4;
+    transform: scale(1.2) translate(-50%, -50%);
+  }
+}
+
+/* Mobile GPU Performance Enhancements (< 768px viewports) */
+@media (max-width: 767px) {
+  .glass {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    background: rgba(15, 20, 35, 0.85);
+  }
+
+  .glass-premium {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background: rgba(11, 14, 30, 0.9);
+  }
+
+  /* Disable battery-draining continuous background animations on small mobile screens */
+  .animate-pulse-slow,
+  .animate-glow {
+    animation: none !important;
+  }
+}
+
+/* ── Pure CSS Marquee (replaces JS-driven framer-motion scroll) ─────────────
+   Runs entirely on the GPU compositor thread — zero main thread cost.        */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  will-change: transform;
+  animation: marquee 40s linear infinite;
+  /* Pause on hover for desktop UX */
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* Pause marquee on mobile to save battery (user can't hover anyway) */
+@media (max-width: 767px) {
+  .marquee-track:hover {
+    animation-play-state: running;
+  }
+}
+
+/* ── GPU Compositing for animated / fixed elements ──────────────────────────
+   Promotes layers that animate to the GPU so the main thread stays free.     */
+.glass,
+.glass-premium,
+[class*="backdrop-blur"] {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ── Scroll container optimizations ─────────────────────────────────────────
+   contain:paint limits repaint scope; touch-action speeds up swipe handling  */
+[class*="overflow-y-auto"],
+[class*="overflow-y-scroll"],
+[class*="overflow-auto"],
+[class*="overflow-scroll"] {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* ── Reduce expensive filter effects on low-power mobile screens ─────────── */
+@media (max-width: 767px) {
+  /* Large blur orbs are GPU-expensive on mobile */
+  [class*="blur-[120px]"],
+  [class*="blur-[100px]"],
+  [class*="blur-[80px]"] {
+    filter: blur(40px) !important;
+  }
+
+  /* Drop shadows trigger compositing — reduce radius on mobile */
+  [class*="drop-shadow"] {
+    filter: none;
+  }
+
+  /* backdrop-blur is one of the most expensive CSS ops on mobile */
+  .glass-premium {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(11, 14, 30, 0.95);
+  }
+}
+
+/* ── Prefers reduced motion: strip all transitions globally ─────────────────
+   Respects OS-level "reduce motion" accessibility setting                    */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .marquee-track {
+    animation: none;
+  }
+}
