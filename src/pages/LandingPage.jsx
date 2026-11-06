@@ -10,6 +10,7 @@ import {
   isServerAvailable,
 } from "../lib/firebase";
 import { supabase } from "../lib/supabase";
+import { getGoogleSignInErrorMessage } from "../lib/firebaseAuthErrors";
 import { generateRoomCode, normalizeRoomCode, isHotspotRoomCode } from "../lib/roomCodes";
 import { ref, remove } from "firebase/database";
 import {
@@ -434,9 +435,10 @@ const LandingPage = () => {
   const handleGoogleSignIn = async () => {
     try {
       await loginWithGoogle();
-    } catch {
-      setError("Sign-in failed. Please try again.");
-      setTimeout(() => setError(""), 3000);
+    } catch (signInError) {
+      console.error("[auth] Google sign-in failed", signInError);
+      setError(getGoogleSignInErrorMessage(signInError));
+      setTimeout(() => setError(""), 8000);
     }
   };
 

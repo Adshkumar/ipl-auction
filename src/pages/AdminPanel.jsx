@@ -27,6 +27,7 @@ import {
 import { motion } from 'framer-motion';
 import Footer from '../components/Footer';
 import useDocumentTitle from '../hooks/useDocumentTitle';
+import { getGoogleSignInErrorMessage } from '../lib/firebaseAuthErrors';
 import { IPL_PLAYERS } from '../data/players';
 
 // Admin Components
@@ -164,6 +165,7 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const [authError, setAuthError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
   // Firestore Data
@@ -557,6 +559,16 @@ const AdminPanel = () => {
     }
   };
 
+  const handleAdminSignIn = async () => {
+    setAuthError(null);
+    try {
+      await loginWithGoogle();
+    } catch (signInError) {
+      console.error('[admin] Google sign-in failed', signInError);
+      setAuthError(getGoogleSignInErrorMessage(signInError));
+    }
+  };
+
   // ─── Render Authentication Lock Screen if Not Admin ───
   if (!user) {
     return (
@@ -580,8 +592,14 @@ const AdminPanel = () => {
             Authentication required to access the IPL Auction Hub system management dashboard.
           </p>
 
+          {authError && (
+            <p role="alert" className="mb-5 rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-left text-xs leading-relaxed text-red-300">
+              {authError}
+            </p>
+          )}
+
           <button
-            onClick={loginWithGoogle}
+            onClick={handleAdminSignIn}
             className="w-full py-3.5 px-5 sm:px-6 rounded-2xl bg-gradient-to-r from-[#ff5500] to-[#ff8c00] text-white font-black uppercase tracking-[0.15em] text-xs hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_10px_30px_rgba(255,85,0,0.3)] flex items-center justify-center gap-3 cursor-pointer"
           >
             <LogIn className="w-4 h-4" />

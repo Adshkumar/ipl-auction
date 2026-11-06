@@ -33,6 +33,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { TEAMS } from '../data/teams';
+import { getGoogleSignInErrorMessage } from '../lib/firebaseAuthErrors';
 import { formatCrores, toFiniteNumber } from '../lib/auctionDisplay';
 import TextChat from '../components/TextChat';
 import Footer from '../components/Footer';
@@ -266,7 +267,7 @@ const Lobby = () => {
       await loginWithGoogle();
     } catch (error) {
       console.error('[lobby] Google sign-in failed', error);
-      setActionError('Sign-in failed. Please try again.');
+      setActionError(getGoogleSignInErrorMessage(error));
     } finally {
       setIsUpdatingSettings(false);
     }

@@ -32,13 +32,22 @@ const PageLoader = ({ isGame = false }) => {
     // Load progress based on actual page load event
     let progressInterval = null;
     let simulatedInterval = null;
+    let fallbackTimeout = null;
+    let finished = false;
     const finishLoading = () => {
+      if (finished) return;
+      finished = true;
       setProgress(100);
       setIsLoaded(true);
       setShowLoader(false);
       if (progressInterval) clearInterval(progressInterval);
       if (simulatedInterval) clearInterval(simulatedInterval);
+      if (fallbackTimeout) clearTimeout(fallbackTimeout);
+      window.removeEventListener('load', finishLoading);
     };
+
+    // Third-party scripts can delay the window load event indefinitely.
+    fallbackTimeout = setTimeout(finishLoading, 10000);
 
     const startRealProgress = () => {
       // Increment progress slowly until the page load event fires (stop near 95% to keep animation smooth)
@@ -96,6 +105,7 @@ const PageLoader = ({ isGame = false }) => {
       return () => {
         if (progressInterval) clearInterval(progressInterval);
         if (simulatedInterval) clearInterval(simulatedInterval);
+        if (fallbackTimeout) clearTimeout(fallbackTimeout);
         if (switchTimeout) clearTimeout(switchTimeout);
         clearInterval(tipTimer);
         window.removeEventListener('keydown', handleKeyDown);

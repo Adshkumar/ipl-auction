@@ -78,6 +78,12 @@ Deploy or run the latest version of PurseWar locally. No complex CLI is required
    npm run dev
    ```
 
+### Deploying to Vercel
+
+Add the required `VITE_FIREBASE_*` and `VITE_SUPABASE_*` values from your local `.env` to the Vercel project's Environment Variables for the Production environment, then redeploy. Vite embeds these values at build time, so changing them requires a new deployment. Do not commit `.env`; add the values in Vercel under Project Settings > Environment Variables.
+
+For Google sign-in, enable the Google provider in Firebase Authentication and add the exact Vercel hostname (`ipl-auction-blush-three.vercel.app`, without `https://`) under Firebase Authentication > Settings > Authorized domains. Add each production or preview hostname where users should be able to sign in.
+
 ---
 
 ## Product highlights
