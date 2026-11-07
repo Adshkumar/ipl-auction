@@ -6,17 +6,17 @@ import { Gavel, ChevronRight } from 'lucide-react';
 
 const GAME_TIPS = [
   "TIP: Hosting a room is free. Tap Create Room, pick your franchise, and share the 6-character code with your crew.",
-  "TIP: Playing solo? Hit Fill Bots in the lobby to let smart AI managers fill every empty franchise instantly.",
+  "TIP: Playing solo? Use Fill Bots in the lobby to fill open franchises with computer-controlled bidders.",
   "TIP: Public rooms are listed in the Join tab - jump into an open auction without needing a room code.",
-  "TIP: Watch your purse. Reserve budget for your mandatory squad slots so you are never priced out late.",
+  "TIP: Watch your purse. Keep enough budget for the squad slots you still need.",
   "DID YOU KNOW: PurseWar enforces the overseas quota automatically - max 8 in Mega, 4 in Classic, 2 in Sprint.",
   "TIP: Toggle your room Public or Private before starting so only the right players can join.",
-  "DID YOU KNOW: Every completed auction is saved to your History tab with full squads, spends, and ratings.",
-  "TIP: No account needed - continue as a guest manager and start bidding in seconds."
+  "TIP: Completed auctions may be available in History, depending on the room type and saved data.",
+  "TIP: No Google sign-in needed - continue as a guest manager and start bidding."
 ];
 
 const PageLoader = ({ isGame = false }) => {
-  const [, setProgress] = useState(0);
+  const [progress, setProgress] = useState(0);
   const [tipIndex, setTipIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   // Ensure loader UI stays visible for at least 2 seconds
@@ -123,7 +123,7 @@ const PageLoader = ({ isGame = false }) => {
   if (isGameMode && !skippedIntro) {
     return (
       <motion.div
-        className="arena-canvas fixed inset-0 z-[9999] bg-[#050505] flex flex-col justify-end p-6 md:p-12 overflow-hidden select-none font-sans text-white"
+        className="arena-canvas loader-screen fixed inset-0 z-[9999] bg-[#050505] flex flex-col justify-between px-4 pt-[max(1.25rem,env(safe-area-inset-top))] pb-[max(1.25rem,env(safe-area-inset-bottom))] sm:px-8 sm:py-8 overflow-y-auto overflow-x-hidden select-none font-sans text-white"
       >
 
         {/* Dynamic HTML/CSS Gaming Backdrop (Matches Landing Page Theme) */}
@@ -154,45 +154,69 @@ const PageLoader = ({ isGame = false }) => {
           <div className="absolute inset-0 bg-radial-[circle_at_center,transparent_20%,#050505_95%]" />
         </div>
 
-        {/* Top-Right: Brand Lockup */}
-        <div
-          className="absolute top-6 right-6 z-10 flex items-center gap-2.5 bg-white/[0.04] border border-white/10 pl-2 pr-4 py-2 rounded-full backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.4)]"
-        >
-          <span className="flex items-center justify-center w-7 h-7 rounded-full bg-white/15 border border-white/30">
-            <Gavel size={14} className="" />
-          </span>
-          <div className="flex flex-col leading-none">
+        <header className="relative z-10 mx-auto flex w-full max-w-6xl items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full border border-[#f5bd55]/30 bg-[#f5bd55]/10 text-[#f5bd55]">
+              <Gavel size={17} />
+            </span>
             <span
-              className="text-[20px] bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent"
-              style={{ fontFamily: '"Geist Pixel", Silkscreen, VT323, "Geist Mono", monospace', fontWeight: 600 }}
+              className="text-lg font-semibold tracking-tight text-white"
+              style={{ fontFamily: '"Geist Pixel", Silkscreen, VT323, "Geist Mono", monospace' }}
             >
               PurseWar
             </span>
           </div>
-        </div>
+          <span className="rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-[8px] font-black uppercase tracking-[0.18em] text-white/55 sm:text-[9px]">
+            Cricket auction simulator
+          </span>
+        </header>
 
-        {/* Bottom Loading Bar & Tips */}
-        <div
-          className="relative z-10 w-full max-w-7xl mx-auto flex flex-col gap-6"
-        >
+        <main className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center py-8 text-center sm:py-12">
+          <div className="loader-stadium-mark relative mb-6 flex h-28 w-28 items-center justify-center sm:mb-8 sm:h-36 sm:w-36">
+            <div className="absolute inset-0 rounded-full border border-[#f5bd55]/15" />
+            <div className="absolute inset-[12%] rounded-full border border-[#f5bd55]/25" />
+            <div className="absolute inset-[25%] rounded-full border border-dashed border-white/15" />
+            <span className="relative flex h-14 w-14 items-center justify-center rounded-2xl border border-[#f5bd55]/30 bg-[#f5bd55]/10 text-[#f5bd55] shadow-[0_0_40px_rgba(245,189,85,0.14)] sm:h-16 sm:w-16">
+              <Gavel size={25} />
+            </span>
+            <motion.span
+              className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#f5bd55]"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+            />
+          </div>
+          <p className="mb-3 text-[9px] font-black uppercase tracking-[0.28em] text-[#f5bd55] sm:text-[10px]">
+            Welcome to the auction floor
+          </p>
+          <h1 className="max-w-3xl text-balance text-3xl font-black uppercase leading-[0.98] tracking-[-0.06em] text-white sm:text-5xl md:text-6xl">
+            Build your <span className="text-[#f5bd55]">franchise.</span>
+          </h1>
+          <p className="mt-4 max-w-xl text-xs font-medium leading-relaxed text-white/55 sm:mt-5 sm:text-sm">
+            Pick your team, manage your purse, and take your place in the live auction.
+          </p>
+        </main>
 
-          {/* Tip Box & Spinning Seam Ball */}
-          <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
-
-            {/* Game Tip / Trivia */}
-            <div className="max-w-2xl bg-white/[0.02] border-l-4 border-orange-500 p-4 rounded-r-md backdrop-blur-md border border-white/5 border-l-0 shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
-              <span className="text-[9px] font-black tracking-widest text-orange-500 uppercase block mb-1">
-                Loading Tip
+        <section className="relative z-10 mx-auto w-full max-w-6xl">
+          <div className="grid gap-3 rounded-2xl border border-white/10 bg-[#100d0b]/90 p-3 shadow-[0_20px_70px_rgba(0,0,0,0.4)] backdrop-blur-md sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:gap-6 sm:rounded-3xl sm:p-5 md:p-6">
+            <div className="flex min-h-14 min-w-0 flex-col justify-center border-l-2 border-[#f5bd55]/70 pl-3 sm:min-h-16 sm:pl-4">
+              <span className="mb-1 text-[8px] font-black uppercase tracking-[0.2em] text-[#f5bd55] sm:text-[9px]">
+                Auction tip
               </span>
-              <div className="min-h-[40px] flex items-center">
-                <p className="text-xs md:text-sm font-semibold tracking-wide text-white/90 leading-relaxed">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={tipIndex}
+                  initial={{ opacity: 0, y: 5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -5 }}
+                  transition={{ duration: 0.2 }}
+                  className="text-[11px] font-semibold leading-relaxed text-white/75 sm:text-sm"
+                >
                   {GAME_TIPS[tipIndex]}
-                </p>
-              </div>
+                </motion.p>
+              </AnimatePresence>
             </div>
 
-            {/* Bottom Right: Loading indicator / Enter button */}
-            <div className="self-end md:self-auto flex items-center gap-4">
+            <div className="flex min-h-11 items-center justify-between gap-3 sm:justify-end">
               <AnimatePresence mode="wait">
                 {(!isLoaded && showLoader) ? (
                   <motion.div
@@ -200,51 +224,51 @@ const PageLoader = ({ isGame = false }) => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0, y: -8, scale: 0.96 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    className="flex items-center gap-3 bg-white/[0.02] border border-white/5 px-4 py-2.5 rounded-md backdrop-blur-md shadow-lg"
+                    transition={{ duration: 0.3, ease: 'easeOut' }}
+                    className="flex items-center gap-2.5 text-[9px] font-bold uppercase tracking-[0.16em] text-white/55 sm:text-[10px]"
+                    role="status"
+                    aria-live="polite"
                   >
-                    <span className="text-[10px] font-bold text-white/60 uppercase tracking-widest">
-                      Loading
-                    </span>
-                    {/* Spinning Cricket ball representation */}
-                    <motion.div
-                      className="w-7 h-7 rounded-full bg-red-600 border border-red-700 relative overflow-hidden flex items-center justify-center shadow-[0_0_10px_rgba(220,38,38,0.5)]"
+                    <motion.span
+                      className="h-4 w-4 rounded-full border-2 border-white/15 border-t-[#f5bd55]"
                       animate={{ rotate: 360 }}
-                      transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
-                    >
-                      {/* White ball seam */}
-                      <div className="absolute inset-y-0 left-1/2 w-0.5 bg-white/70 transform -translate-x-1/2 border-dashed border-spacing-1" />
-                      <div className="absolute inset-x-0 top-1/2 h-0.5 bg-white/10 transform -translate-y-1/2" />
-                    </motion.div>
+                      transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                    />
+                    Getting the arena ready
                   </motion.div>
                 ) : (
-                  <motion.div
+                  <motion.button
                     key="enter"
-                    initial={{ opacity: 0, y: 12 }}
+                    onClick={handleContinue}
+                    initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.3 }}
+                    className="group relative flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-[#f5bd55]/40 bg-[#e8b44f] px-5 py-3 text-[10px] font-black uppercase tracking-[0.16em] text-[#21170a] shadow-[0_8px_24px_rgba(232,180,79,0.14)] transition hover:bg-[#f3c76e] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#f5bd55]/70 focus:ring-offset-2 focus:ring-offset-[#090807] sm:w-auto sm:px-6"
                   >
-                    <button
-                      onClick={handleContinue}
-                      className="group relative overflow-hidden flex items-center gap-2.5 bg-[#ff5500] text-white font-black uppercase tracking-[0.2em] text-[11px] px-7 py-3.5 rounded-2xl border border-white/10 transition-all cursor-pointer duration-200 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-[#ff5500]/50 focus:ring-offset-2 focus:ring-offset-[#050505]"
-                    >
-                      <span className="relative z-10">Enter Auction Room</span>
-                      <ChevronRight size={15} className="relative z-10 transition-transform duration-200 group-hover:translate-x-0.5" />
-                    </button>
-                  </motion.div>
+                    <span className="relative z-10">Enter Auction Hub</span>
+                    <ChevronRight size={15} className="relative z-10 transition-transform group-hover:translate-x-0.5" />
+                  </motion.button>
                 )}
               </AnimatePresence>
             </div>
-
           </div>
 
-          {/* Minimal full-width loading line at the very bottom */}
-          <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-            <div className="h-full w-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.5)]" />
+          <div
+            className="mt-3 h-1 overflow-hidden rounded-full bg-white/[0.07]"
+            role="progressbar"
+            aria-label="Loading PurseWar"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(progress)}
+          >
+            <motion.div
+              className="h-full rounded-full bg-gradient-to-r from-[#cf8d34] via-[#f5bd55] to-[#ffe1a0] shadow-[0_0_12px_rgba(245,189,85,0.45)]"
+              animate={{ width: `${isLoaded ? 100 : Math.max(progress, 5)}%` }}
+              transition={{ duration: 0.2, ease: 'linear' }}
+            />
           </div>
-
-        </div>
+        </section>
       </motion.div>
     );
   }

@@ -526,6 +526,147 @@ button, .no-select {
   }
 }
 
+@media (max-width: 767px) {
+  .auction-room-header {
+    height: 2.75rem;
+    min-height: 2.75rem;
+  }
+
+  .auction-center-header {
+    min-height: 2.25rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  .auction-center-main {
+    padding: 0.375rem;
+  }
+
+  .auction-live-card-shell {
+    min-height: 0;
+    border-radius: 1.25rem;
+  }
+
+  .auction-live-label-row {
+    padding: 0.5rem 0.65rem 0;
+  }
+
+  .auction-live-label {
+    gap: 0.35rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 7px;
+    letter-spacing: 0.12em;
+  }
+
+  .auction-live-content {
+    display: grid;
+    grid-template-columns: 4.25rem minmax(0, 1fr);
+    align-items: start;
+    gap: 0.5rem;
+    padding: 0.5rem 0.65rem;
+  }
+
+  .auction-player-image {
+    width: 4.25rem;
+    height: 5.5rem;
+    border-radius: 0.85rem;
+  }
+
+  .auction-player-details {
+    gap: 0.45rem;
+    width: auto;
+    text-align: left;
+  }
+
+  .auction-player-identity > div {
+    justify-content: flex-start;
+    gap: 0.35rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .auction-player-identity h2 {
+    font-size: clamp(0.9rem, 4vw, 1.1rem);
+    line-height: 1.05;
+  }
+
+  .auction-player-stats {
+    gap: 0.25rem;
+    padding: 0.35rem;
+    border-radius: 0.75rem;
+  }
+
+  .auction-player-stats span:first-child {
+    margin-bottom: 0.1rem;
+    font-size: 6px;
+    letter-spacing: 0.08em;
+  }
+
+  .auction-player-stats span:last-child {
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+
+  .auction-player-bid {
+    gap: 0.35rem;
+    margin-top: 0;
+  }
+
+  .auction-player-bid > div:first-child > span:first-child {
+    margin-bottom: 0.15rem;
+    font-size: 7px;
+  }
+
+  .auction-player-bid > div:first-child > div > span:first-child {
+    font-size: 0.95rem;
+  }
+
+  .auction-player-bid > div:last-child {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .auction-live-footer {
+    gap: 0.45rem;
+    padding: 0.45rem 0.6rem;
+  }
+
+  .auction-franchise-quick-stats {
+    gap: 0.25rem;
+    padding: 0.35rem 0.45rem;
+    font-size: 7px;
+  }
+
+  .auction-franchise-quick-stats > div:not(.hidden) {
+    gap: 0.2rem;
+  }
+
+  .auction-franchise-quick-stats span {
+    font-size: 7px;
+  }
+
+  .auction-bid-actions {
+    gap: 0.5rem;
+  }
+
+  .auction-bid-actions > button:first-child,
+  .auction-bid-actions > button:last-child {
+    height: 2.5rem;
+    border-radius: 0.85rem;
+  }
+
+  .auction-bid-actions > button:first-child {
+    font-size: 0.7rem;
+  }
+
+  .auction-bid-actions > button:last-child {
+    width: 2.5rem;
+  }
+
+  .auction-center-main > div {
+    gap: 0.5rem;
+  }
+}
+
 /* ── Prefers reduced motion: strip all transitions globally ─────────────────
    Respects OS-level "reduce motion" accessibility setting                    */
 @media (prefers-reduced-motion: reduce) {

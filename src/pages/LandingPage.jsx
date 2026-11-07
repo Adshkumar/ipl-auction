@@ -563,7 +563,7 @@ const LandingPage = () => {
   // ─── Not Signed In: Show Google / Guest Login ───
   if (!user) {
     return (
-      <main className="arena-canvas arena-home relative min-h-screen bg-[#050505] flex flex-col items-center justify-center pt-6 sm:pt-10 px-3 sm:px-4 font-sans text-white overflow-x-hidden">
+      <main className="landing-page arena-canvas arena-home relative min-h-screen bg-[#050505] flex flex-col items-center justify-center pt-3 sm:pt-10 px-3 sm:px-4 font-sans text-white overflow-x-hidden">
         <GithubStarButton />
         <BuyMeACoffee />
 
@@ -573,11 +573,11 @@ const LandingPage = () => {
           <div className="arena-grid-layer" />
         </div>
 
-        <div className="text-center mb-4 z-10 relative max-w-3xl px-2 sm:px-4 mt-6 sm:mt-10">
+        <div className="landing-hero text-center mb-3 sm:mb-4 z-10 relative max-w-3xl px-2 sm:px-4 mt-4 sm:mt-10">
           <h1 className="sr-only">
             PurseWar - IPL Auction Simulator & Game
           </h1>
-          <div className="arena-kicker mb-4 sm:mb-5">Welcome to the auction floor</div>
+          <div className="arena-kicker mb-3 sm:mb-5">Welcome to the auction floor</div>
           <div className="text-2xl sm:text-4xl md:text-5xl xl:text-[64px] font-black tracking-[-0.06em] leading-none text-balance bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
             CREATE YOUR
           </div>
@@ -591,7 +591,7 @@ const LandingPage = () => {
           </p>
 
           {/* Three-step visual story */}
-          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 sm:gap-x-6 mt-5 px-2 text-[9px] sm:text-[10px] font-black tracking-wider sm:tracking-widest text-gray-400 uppercase select-none">
+          <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 sm:gap-x-6 mt-4 sm:mt-5 px-2 text-[9px] sm:text-[10px] font-black tracking-wider sm:tracking-widest text-gray-400 uppercase select-none">
             <span className="hover:text-orange-500/80 transition-colors">
               ① Create Room
             </span>
@@ -605,7 +605,7 @@ const LandingPage = () => {
             </span>
           </div>
           <PWAInstallButton />
-          <div className="mt-5 sm:mt-7 flex flex-col items-center gap-2.5">
+          <div className="mt-4 sm:mt-7 flex flex-col items-center gap-2.5">
             <span className="text-[8px] sm:text-[9px] font-black uppercase tracking-[0.3em] text-gray-500">
               Ten franchises. One auction floor.
             </span>
@@ -632,24 +632,24 @@ const LandingPage = () => {
         </div>
 
         {/* Subtle gradient line / Faded Divider */}
-        <div className="w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-4 mt-6 sm:mt-10 z-10 relative" />
+        <div className="w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-3 sm:my-4 mt-4 sm:mt-10 z-10 relative" />
 
-        <div className="arena-console w-full max-w-6xl bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-3 z-10 relative mt-2">
+        <div className="landing-console arena-console w-full max-w-6xl bg-white/[0.03] border border-white/10 rounded-[1.75rem] sm:rounded-[2.5rem] p-2 sm:p-3 z-10 relative mt-1 sm:mt-2">
           {/* Subtle Orange Glow behind panel */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#ff5500]/[0.02] via-[#ff5500]/[0.01] to-transparent rounded-[2.5rem] blur-xl pointer-events-none -z-10" />
           <div className="absolute -inset-2 bg-gradient-to-r from-[#ff5500]/5 to-[#0088ff]/2 rounded-[2.5rem] blur-3xl opacity-40 pointer-events-none -z-10" />
-          <div className="arena-console-inner bg-[#0c0c0c] rounded-[2.2rem] border border-white/5 grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch divide-y lg:divide-y-0 lg:divide-x divide-white/5 overflow-hidden">
+          <div className="landing-console-inner arena-console-inner bg-[#0c0c0c] rounded-[1.4rem] sm:rounded-[2.2rem] border border-white/5 grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch divide-y lg:divide-y-0 lg:divide-x divide-white/5 overflow-hidden">
             {/* Left Side: Live Activity Feed */}
-            <div className="lg:col-span-7 w-full flex flex-col p-6 md:p-8 relative">
+            <div className="lg:col-span-7 w-full flex flex-col p-3 sm:p-6 md:p-8 relative">
               <AuctionActivityFeed activeCount={publicRooms.length} />
             </div>
 
             {/* Right Side: Welcome Login Form */}
-            <div className="lg:col-span-5 w-full p-8 md:p-10 flex flex-col items-center justify-center">
+            <div className="lg:col-span-5 w-full p-4 sm:p-8 md:p-10 flex flex-col items-center justify-center">
               <h2 className="text-xl font-black uppercase tracking-tight mb-1">
                 {isGuestMode ? "Guest Access" : "Welcome, Manager"}
               </h2>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-8">
+              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-5 sm:mb-8">
                 {isGuestMode
                   ? "Enter a name to join"
                   : "Sign in to enter the auction hub"}
@@ -783,7 +783,7 @@ const LandingPage = () => {
 
   // ─── Signed In: Show Create / Join / History ───
   return (
-    <main className="arena-canvas arena-home relative min-h-screen bg-[#050505] flex flex-col items-center justify-center pt-6 sm:pt-10 px-3 sm:px-4 font-sans text-white overflow-x-hidden">
+    <main className="landing-page arena-canvas arena-home relative min-h-screen bg-[#050505] flex flex-col items-center justify-center pt-3 sm:pt-10 px-3 sm:px-4 font-sans text-white overflow-x-hidden">
       <GithubStarButton />
       <BuyMeACoffee />
 
@@ -794,11 +794,11 @@ const LandingPage = () => {
       </div>
 
       {/* Hero */}
-      <div className="text-center mb-4 z-10 relative max-w-3xl px-2 sm:px-4 mt-6 sm:mt-10">
+      <div className="landing-hero text-center mb-3 sm:mb-4 z-10 relative max-w-3xl px-2 sm:px-4 mt-4 sm:mt-10">
         <h1 className="sr-only">
           PurseWar - IPL Auction Simulator & Game
         </h1>
-        <div className="arena-kicker mb-4 sm:mb-5">Welcome to the auction floor</div>
+        <div className="arena-kicker mb-3 sm:mb-5">Welcome to the auction floor</div>
         <div className="text-2xl sm:text-4xl md:text-5xl xl:text-[64px] font-black tracking-[-0.06em] leading-none text-balance bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60">
           CREATE YOUR
         </div>
@@ -812,7 +812,7 @@ const LandingPage = () => {
         </p>
 
         {/* Three-step visual story */}
-        <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 sm:gap-x-6 mt-5 px-2 text-[9px] sm:text-[10px] font-black tracking-wider sm:tracking-widest text-gray-400 uppercase select-none">
+        <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1.5 sm:gap-x-6 mt-4 sm:mt-5 px-2 text-[9px] sm:text-[10px] font-black tracking-wider sm:tracking-widest text-gray-400 uppercase select-none">
           <span className="hover:text-orange-500/80 transition-colors">
             ① Create Room
           </span>
@@ -853,20 +853,20 @@ const LandingPage = () => {
       </div>
 
       {/* Subtle gradient line / Faded Divider */}
-      <div className="w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-4 mt-6 sm:mt-10 z-10 relative" />
+      <div className="w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-3 sm:my-4 mt-4 sm:mt-10 z-10 relative" />
 
-      <div className="arena-console w-full max-w-6xl bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-3 z-10 relative mt-2">
+      <div className="landing-console arena-console w-full max-w-6xl bg-white/[0.03] border border-white/10 rounded-[1.75rem] sm:rounded-[2.5rem] p-2 sm:p-3 z-10 relative mt-1 sm:mt-2">
         {/* Subtle Orange Glow behind panel */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#ff5500]/[0.02] via-[#ff5500]/[0.01] to-transparent rounded-[2.5rem] blur-xl pointer-events-none -z-10" />
         <div className="absolute -inset-2 bg-gradient-to-r from-[#ff5500]/5 to-[#0088ff]/2 rounded-[2.5rem] blur-3xl opacity-40 pointer-events-none -z-10" />
-        <div className="arena-console-inner bg-[#0c0c0c] rounded-[2.2rem] border border-white/5 grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch divide-y lg:divide-y-0 lg:divide-x divide-white/5 overflow-hidden">
+        <div className="landing-console-inner arena-console-inner bg-[#0c0c0c] rounded-[1.4rem] sm:rounded-[2.2rem] border border-white/5 grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch divide-y lg:divide-y-0 lg:divide-x divide-white/5 overflow-hidden">
           {/* Left Side: Live signings */}
-          <div className="lg:col-span-5 w-full flex flex-col p-6 md:p-8 relative">
+          <div className="lg:col-span-5 w-full flex flex-col p-3 sm:p-6 md:p-8 relative">
             <AuctionActivityFeed activeCount={serverRoomCount} />
           </div>
 
           {/* Right Side: Create/Join/History form */}
-          <div className="lg:col-span-7 w-full p-4 sm:p-6 md:p-8 flex flex-col">
+          <div className="lg:col-span-7 w-full p-3 sm:p-6 md:p-8 flex flex-col">
             {availableServers.length > 1 && (
               <div className="flex items-center justify-between gap-3 mb-3 sm:mb-4">
                 <div className="min-w-0">

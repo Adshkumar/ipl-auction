@@ -304,7 +304,7 @@ const Lobby = () => {
   // ─── Unauthenticated State: Show Login Gateway ───
   if (banError) {
     return (
-      <div className="arena-canvas relative min-h-screen bg-[#050505] flex items-center justify-center p-6 font-primary text-white overflow-x-hidden">
+      <div className="arena-canvas relative min-h-screen bg-[#050505] flex items-center justify-center p-3 sm:p-6 font-primary text-white overflow-x-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-orange-800/20 md:bg-orange-700/20 blur-[120px] rounded-full" />
           <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-blue-600/10 blur-[120px] rounded-full" />
@@ -312,23 +312,23 @@ const Lobby = () => {
         </div>
         <motion.div
           {...enterProps({ opacity: 0, scale: 0.9 })}
-          className="max-w-md w-full bg-white/5 border border-white/10 p-12 rounded-[3.5rem] text-center relative z-10 overflow-hidden"
+          className="max-w-md w-full bg-white/5 border border-white/10 p-6 sm:p-12 rounded-[2rem] sm:rounded-[3.5rem] text-center relative z-10 overflow-hidden"
         >
           <div className="absolute top-0 right-0 p-8 w-32 h-32 bg-red-500/10 rounded-full -mr-16 -mt-16 blur-3xl" />
           <div className="absolute bottom-0 left-0 p-8 w-32 h-32 bg-red-500/10 rounded-full -ml-16 -mb-16 blur-3xl" />
 
-          <div className="w-24 h-24 bg-red-500/10 border border-red-500/20 rounded-[2.5rem] flex items-center justify-center mx-auto mb-10 shadow-2xl shadow-red-500/20 relative group">
-            <ShieldAlert size={48} className="text-red-500 group-hover:scale-110 transition-transform duration-500" />
+          <div className="w-16 h-16 sm:w-24 sm:h-24 bg-red-500/10 border border-red-500/20 rounded-[1.5rem] sm:rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 sm:mb-10 shadow-2xl shadow-red-500/20 relative group">
+            <ShieldAlert size={36} className="text-red-500 group-hover:scale-110 transition-transform duration-500 sm:w-12 sm:h-12" />
           </div>
 
-          <h1 className="text-4xl font-black mb-4 uppercase tracking-tighter">BANNED FROM ROOM</h1>
-          <p className="text-gray-400 font-bold text-sm leading-relaxed uppercase tracking-widest mb-10 opacity-70">
+          <h1 className="text-2xl sm:text-4xl font-black mb-3 sm:mb-4 uppercase tracking-tighter">BANNED FROM ROOM</h1>
+          <p className="text-gray-400 font-bold text-xs sm:text-sm leading-relaxed uppercase tracking-widest mb-6 sm:mb-10 opacity-70">
             {banError}
           </p>
 
           <button
             onClick={() => navigate('/')}
-            className="w-full py-6 bg-white text-black font-black uppercase tracking-widest rounded-[2rem] hover:bg-gray-100 transition-all active:scale-95 flex items-center justify-center gap-3"
+            className="w-full py-4 sm:py-6 bg-white text-black font-black uppercase tracking-widest rounded-[1.25rem] sm:rounded-[2rem] hover:bg-gray-100 transition-all active:scale-95 flex items-center justify-center gap-3"
           >
             <Home size={20} />
             BACK TO HOME
@@ -346,7 +346,7 @@ const Lobby = () => {
 
   if (!user) {
     return (
-      <div className="arena-canvas relative min-h-screen bg-[#050505] flex flex-col items-center justify-center py-12 px-4 font-sans text-white overflow-x-hidden">
+      <div className="arena-canvas relative min-h-screen bg-[#050505] flex flex-col items-center justify-center py-8 sm:py-12 px-3 sm:px-4 font-sans text-white overflow-x-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-orange-800/20 md:bg-orange-700/20 blur-[120px] rounded-full" />
           <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-blue-600/10 blur-[120px] rounded-full" />
@@ -355,9 +355,9 @@ const Lobby = () => {
 
         <motion.div
           {...enterProps({ opacity: 0, y: 20 })}
-          className="relative z-10 w-full md:w-xl max-md bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-3 shadow-2xl"
+          className="relative z-10 w-full md:w-xl max-md bg-white/[0.03] border border-white/10 rounded-[1.75rem] sm:rounded-[2.5rem] p-2.5 sm:p-3 shadow-2xl"
         >
-          <div className="bg-[#0c0c0c] rounded-[2.2rem] p-8 border border-white/5 flex flex-col items-center text-center">
+          <div className="bg-[#0c0c0c] rounded-[1.4rem] sm:rounded-[2.2rem] p-5 sm:p-8 border border-white/5 flex flex-col items-center text-center">
 
             <h2 className="text-2xl font-black tracking-tighter uppercase mb-2">Joining Arena</h2>
             <p className="text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] mb-8">Room ID: <span className="text-orange-500">{id}</span></p>
@@ -475,7 +475,7 @@ const Lobby = () => {
   if (!spectateMode && (!isJoined || !currentUserPlayer?.team)) {
     // ═══ TEAM SELECTION OVERLAY ═══
     return (
-      <div className="arena-canvas relative min-h-screen bg-[#050505] flex flex-col items-center py-12 px-4 font-sans text-white overflow-x-hidden">
+      <div className="arena-canvas relative min-h-screen bg-[#050505] flex flex-col items-center py-8 sm:py-12 px-3 sm:px-4 font-sans text-white overflow-x-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-orange-800/20 md:bg-orange-700/20 blur-[120px] rounded-full" />
           <div className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-blue-600/10 blur-[120px] rounded-full" />
@@ -537,7 +537,7 @@ const Lobby = () => {
 
   // ─── Authenticated State ───
   return (
-    <div className="arena-canvas relative min-h-screen bg-[#050505] flex flex-col items-center pt-8 px-4 font-sans text-white overflow-x-hidden">
+    <div className="arena-canvas relative min-h-screen bg-[#050505] flex flex-col items-center pt-4 sm:pt-8 px-3 sm:px-4 font-sans text-white overflow-x-hidden">
 
       {actionError && (
         <div
@@ -556,7 +556,7 @@ const Lobby = () => {
       </div>
 
       {/* Top Navigation */}
-      <div className="w-full max-w-6xl flex flex-nowrap items-center justify-between gap-1.5 sm:gap-2 md:gap-4 mb-6 md:mb-10 z-20 px-2 sm:px-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <div className="w-full max-w-6xl flex flex-wrap items-center justify-between gap-2 sm:gap-2 md:gap-4 mb-4 sm:mb-6 md:mb-10 z-20 px-1 sm:px-4">
         <div className="flex items-center gap-1.5 sm:gap-3 md:gap-4 min-w-0">
           <button
             onClick={() => navigate('/')}
@@ -586,7 +586,7 @@ const Lobby = () => {
         </div>
 
         {isAdmin && (
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="w-full sm:w-auto flex items-center justify-end gap-1.5 sm:gap-2 shrink-0">
             <button
               onClick={() => fillEmptyTeamsWithBots(id)}
               className="shrink-0 px-2.5 sm:px-3 md:px-4 py-2 sm:py-2.5 md:py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] md:text-xs uppercase tracking-wider text-orange-400 hover:text-orange-300 transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer active:scale-95 whitespace-nowrap"
@@ -612,16 +612,16 @@ const Lobby = () => {
 
       <motion.div
         {...enterProps({ opacity: 0, y: 30 }, { transition: { delay: 0.1 } })}
-        className="w-full max-w-6xl bg-white/[0.03] border border-white/10 rounded-[2.5rem] p-3 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-10 relative mt-2"
+        className="w-full max-w-6xl bg-white/[0.03] border border-white/10 rounded-[1.75rem] sm:rounded-[2.5rem] p-1.5 sm:p-3 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-10 relative mt-1 sm:mt-2"
       >
         {/* Subtle Glow behind panel */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#ff5500]/[0.02] via-[#ff5500]/[0.01] to-transparent rounded-[2.5rem] blur-xl pointer-events-none -z-10" />
-        <div className="absolute -inset-2 bg-gradient-to-r from-[#ff5500]/5 to-[#0088ff]/2 rounded-[2.5rem] blur-3xl opacity-40 pointer-events-none -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#ff5500]/[0.02] via-[#ff5500]/[0.01] to-transparent rounded-[1.75rem] sm:rounded-[2.5rem] blur-xl pointer-events-none -z-10" />
+        <div className="absolute -inset-2 bg-gradient-to-r from-[#ff5500]/5 to-[#0088ff]/2 rounded-[1.75rem] sm:rounded-[2.5rem] blur-3xl opacity-40 pointer-events-none -z-10" />
 
-        <div className="bg-[#0c0c0c] rounded-[2.2rem] border border-white/5 grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch divide-y lg:divide-y-0 lg:divide-x divide-white/5 overflow-hidden">
+        <div className="bg-[#0c0c0c] rounded-[1.5rem] sm:rounded-[2.2rem] border border-white/5 grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch divide-y lg:divide-y-0 lg:divide-x divide-white/5 overflow-hidden">
 
           {/* Left Column: Management Hub */}
-          <div className="lg:col-span-5 w-full flex flex-col p-6 md:p-8 relative gap-6">
+          <div className="lg:col-span-5 w-full flex flex-col p-4 sm:p-6 md:p-8 relative gap-5 sm:gap-6">
             {/* Background glow blob */}
             <div className="absolute -top-12 -right-12 w-24 h-24 bg-white/5 blur-[40px] rounded-full pointer-events-none" />
 
@@ -631,30 +631,30 @@ const Lobby = () => {
                 <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Auction Rules</h3>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div className="p-3 bg-white/5 rounded-2xl border border-white/5">
-                  <span className="text-[8px] font-black text-gray-600 uppercase tracking-widest block mb-1">Auction Mode</span>
-                  <span className="text-[11px] font-black text-white uppercase tracking-tight">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="min-w-0 p-2.5 sm:p-3 bg-white/5 rounded-xl sm:rounded-2xl border border-white/5">
+                  <span className="text-[8px] sm:text-[9px] font-black text-gray-500 uppercase tracking-wider sm:tracking-widest block mb-1">Auction Mode</span>
+                  <span className="text-[10px] sm:text-[11px] font-black text-white uppercase tracking-tight leading-snug">
                     {currentAuction?.auctionType === 'sprint5' ? '5-Player Sprint' :
                       currentAuction?.auctionType === 'sprint11' ? '11-Player Classic' :
                         'Mega Auction'}
                   </span>
                 </div>
-                <div className="p-3 bg-white/5 rounded-2xl border border-white/5">
-                  <span className="text-[8px] font-black text-gray-600 uppercase tracking-widest block mb-1">Initial Budget</span>
-                  <span className="text-[11px] font-black text-yellow-500 uppercase tracking-tight">
+                <div className="min-w-0 p-2.5 sm:p-3 bg-white/5 rounded-xl sm:rounded-2xl border border-white/5">
+                  <span className="text-[8px] sm:text-[9px] font-black text-gray-500 uppercase tracking-wider sm:tracking-widest block mb-1">Initial Budget</span>
+                  <span className="text-[10px] sm:text-[11px] font-black text-yellow-500 uppercase tracking-tight">
                     ₹{formatCrores(toFiniteNumber(currentAuction?.settings?.budget, 120), 1)} Cr
                   </span>
                 </div>
-                <div className="p-3 bg-white/5 rounded-2xl border border-white/5">
-                  <span className="text-[8px] font-black text-gray-600 uppercase tracking-widest block mb-1">Squad Capacity</span>
-                  <span className="text-[11px] font-black text-blue-400 uppercase tracking-tight">
+                <div className="min-w-0 p-2.5 sm:p-3 bg-white/5 rounded-xl sm:rounded-2xl border border-white/5">
+                  <span className="text-[8px] sm:text-[9px] font-black text-gray-500 uppercase tracking-wider sm:tracking-widest block mb-1">Squad Capacity</span>
+                  <span className="text-[10px] sm:text-[11px] font-black text-blue-400 uppercase tracking-tight">
                     {toFiniteNumber(currentAuction?.squadLimit, 25)} Players
                   </span>
                 </div>
-                <div className="p-3 bg-white/5 rounded-2xl border border-white/5">
-                  <span className="text-[8px] font-black text-gray-600 uppercase tracking-widest block mb-1">Overseas Quota</span>
-                  <span className="text-[11px] font-black text-purple-400 uppercase tracking-tight">
+                <div className="min-w-0 p-2.5 sm:p-3 bg-white/5 rounded-xl sm:rounded-2xl border border-white/5">
+                  <span className="text-[8px] sm:text-[9px] font-black text-gray-500 uppercase tracking-wider sm:tracking-widest block mb-1">Overseas Quota</span>
+                  <span className="text-[10px] sm:text-[11px] font-black text-purple-400 uppercase tracking-tight">
                     Max {toFiniteNumber(currentAuction?.overseasLimit, 8)}
                   </span>
                 </div>
@@ -675,7 +675,7 @@ const Lobby = () => {
                 )}
               </div>
 
-              <div className="grid grid-cols-5 gap-2.5">
+              <div className="grid grid-cols-5 gap-1 sm:gap-2.5">
                 {TEAMS.map((team) => {
                   const isTaken = teamAssignments[team.id];
                   const isMine = currentUserPlayer?.team === team.id;
@@ -685,7 +685,7 @@ const Lobby = () => {
                       key={team.id}
                       onClick={() => handleTeamSelect(team.id)}
                       disabled={!!isTaken && !isMine}
-                      className={`relative group/team flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 border ${isMine
+                      className={`relative group/team flex min-w-0 min-h-[76px] flex-col items-center justify-center p-1.5 sm:p-2 rounded-xl transition-all duration-200 border ${isMine
                         ? 'bg-[#1b1b1b] border-white/[0.12] scale-[1.02] shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
                         : isTaken
                           ? 'border-transparent opacity-20 grayscale cursor-not-allowed'
@@ -698,11 +698,11 @@ const Lobby = () => {
                         </div>
                       )}
 
-                      <div className={`w-9 h-9 rounded-xl bg-white/5 border border-white/5 p-1.5 flex items-center justify-center mb-2 transition-all duration-300 ${isMine ? 'scale-105 border-white/[0.12] shadow-lg' : 'group-hover/team:scale-105'}`}>
+                      <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/5 border border-white/5 p-1.5 flex items-center justify-center mb-1.5 sm:mb-2 transition-all duration-300 ${isMine ? 'scale-105 border-white/[0.12] shadow-lg' : 'group-hover/team:scale-105'}`}>
                         {isSelectingTeam === team.id ? <Loader2 size={14} className="animate-spin text-white" /> : <img src={team.logo} alt={`${team.name || team.id} Logo`} className="w-full h-full object-contain" />}
                       </div>
 
-                      <span className={`text-[8px] font-black uppercase text-center tracking-tighter truncate w-full ${isMine ? 'text-white' : 'text-gray-500'}`}>
+                      <span className={`text-[8px] sm:text-[9px] font-black uppercase text-center tracking-tighter truncate w-full ${isMine ? 'text-white' : 'text-gray-500'}`}>
                         {isTaken ? isTaken.split(' ')[0] : team.id}
                       </span>
                     </button>
@@ -720,16 +720,17 @@ const Lobby = () => {
                 <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Invite Players</h3>
               </div>
 
-              <div className="flex gap-3">
-                <div className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-gray-500 font-medium truncate flex items-center">
+              <div className="flex min-w-0 gap-2 sm:gap-3">
+                <div className="min-w-0 flex-1 bg-black/40 border border-white/10 rounded-xl px-3 sm:px-4 py-2.5 text-[10px] sm:text-xs text-gray-400 font-medium truncate flex items-center">
                   {window.location.href}
                 </div>
-                <button onClick={copyLink} className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/5 relative group/copy cursor-pointer">
+                <button onClick={copyLink} aria-label="Copy invite link" className="shrink-0 p-2.5 sm:p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/5 relative group/copy cursor-pointer">
                   {copied ? <CheckCircle2 size={18} className="text-green-500" /> : <Copy size={18} className="group-hover/copy:scale-110 transition-transform" />}
                 </button>
                 <button
                   onClick={shareWhatsApp}
-                  className="p-3 bg-[#25D366]/5 hover:bg-[#25D366]/10 rounded-xl transition-all border border-[#25D366]/10 text-[#25D366] group/wa cursor-pointer"
+                  aria-label="Share invite link on WhatsApp"
+                  className="shrink-0 p-2.5 sm:p-3 bg-[#25D366]/5 hover:bg-[#25D366]/10 rounded-xl transition-all border border-[#25D366]/10 text-[#25D366] group/wa cursor-pointer"
                 >
                   <MessageSquare size={18} className="group-hover/wa:scale-110 transition-transform" />
                 </button>
@@ -760,9 +761,9 @@ const Lobby = () => {
           </div>
 
           {/* Right Column: Engagement Hub */}
-          <div className="lg:col-span-7 w-full p-6 md:p-8 flex flex-col justify-start">
+          <div className="lg:col-span-7 w-full p-4 sm:p-6 md:p-8 flex flex-col justify-start">
             {/* Tabs Header */}
-            <div className="flex bg-white/[0.02] p-1.5 gap-1.5 rounded-2xl mb-6 border border-white/5">
+            <div className="flex bg-white/[0.02] p-1 gap-1 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 border border-white/5">
               {[
                 { id: 'players', icon: Users, label: `Players` },
                 { id: 'chat', icon: MessageSquare, label: 'Chat' }
@@ -770,7 +771,7 @@ const Lobby = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 py-3 flex flex-col items-center justify-center gap-1.5 transition-all rounded-xl cursor-pointer ${activeTab === tab.id
+                  className={`flex-1 min-h-12 py-2.5 sm:py-3 flex flex-col items-center justify-center gap-1 sm:gap-1.5 transition-all rounded-lg sm:rounded-xl cursor-pointer ${activeTab === tab.id
                     ? 'bg-white/5 text-[#ff5500] border border-white/10 shadow-inner'
                     : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.01]'
                     }`}
@@ -791,14 +792,14 @@ const Lobby = () => {
               ))}
             </div>
 
-            <div className="flex-1 overflow-y-auto max-h-[500px] custom-scrollbar pr-1">
+            <div className="flex-1 overflow-y-visible sm:overflow-y-auto sm:max-h-[500px] custom-scrollbar sm:pr-1">
               <AnimatePresence mode="wait">
                 {activeTab === 'players' && (
                   <motion.div
                     key="p-list"
                     {...enterProps({ opacity: 0, y: 10 })}
                     {...exitProps({ opacity: 0, y: -10 })}
-                    className="space-y-4"
+                    className="space-y-2.5 sm:space-y-4"
                   >
                     {players.map((player, idx) => {
                       const playerTeam = TEAMS.find(t => t.id === player.team);
@@ -806,10 +807,10 @@ const Lobby = () => {
                         <motion.div
                           key={`${player.id}-${idx}`}
                           {...enterProps({ opacity: 0, x: -10 }, { transition: { delay: idx * 0.05 } })}
-                          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 sm:gap-3 bg-white/[0.01] border border-white/5 p-3 sm:p-4 rounded-2xl group transition-all hover:bg-white/[0.03] hover:border-white/10"
+                          className="flex flex-row items-center justify-between gap-2 sm:gap-3 bg-white/[0.01] border border-white/5 p-2.5 sm:p-4 rounded-xl sm:rounded-2xl group transition-all hover:bg-white/[0.03] hover:border-white/10"
                         >
-                          <div className="flex items-center gap-3 min-w-0 w-full sm:w-auto">
-                            <div className="w-11 h-11 sm:w-12 sm:h-12 shrink-0 rounded-2xl border border-white/10 flex items-center justify-center shadow-2xl relative overflow-hidden bg-white/5 p-1.5">
+                          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-xl sm:rounded-2xl border border-white/10 flex items-center justify-center shadow-2xl relative overflow-hidden bg-white/5 p-1.5">
                               <div className="absolute inset-x-0 bottom-0 top-1/2 bg-black/5 pointer-events-none" />
                               {playerTeam ? (
                                 <img src={playerTeam.logo} alt={`${playerTeam.name || playerTeam.id} Logo`} className="w-full h-full object-contain relative z-10" />
@@ -824,13 +825,13 @@ const Lobby = () => {
                                 {(player.isBot || player.id.startsWith('bot_')) && <span className="text-[8px] font-black bg-orange-500/20 text-orange-400 px-1.5 py-0.5 rounded border border-orange-500/30 flex items-center gap-1 shrink-0"><Zap size={8} /> AI BOT</span>}
                                 {player.id === user?.uid && <span className="text-[8px] font-black bg-white/10 px-1.5 py-0.5 rounded text-gray-400 shrink-0">YOU</span>}
                               </div>
-                              <p className="text-[9px] text-gray-500 font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] mt-0.5 truncate">
+                              <p className="text-[8px] sm:text-[9px] text-gray-500 font-bold uppercase tracking-[0.1em] sm:tracking-[0.2em] mt-0.5 truncate">
                                 {playerTeam?.name || (player.team === '' ? 'CALIBRATING...' : player.team)}
                               </p>
                             </div>
                           </div>
 
-                          <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto pt-2 sm:pt-0 border-t border-white/5 sm:border-0 gap-3">
+                          <div className="flex items-center justify-end shrink-0 gap-2 sm:gap-3">
                             <div className="flex items-center gap-1.5 sm:flex-col sm:items-end">
                               <div className={`w-1.5 h-1.5 rounded-full shadow-lg ${player.isBot || player.isOnline ? 'bg-green-500 shadow-green-500/50' : 'bg-gray-700'}`} />
                               <span className={`text-[8px] font-black uppercase tracking-tighter ${player.isBot || player.isOnline ? 'text-green-500' : 'text-gray-700'}`}>

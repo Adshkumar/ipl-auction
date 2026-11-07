@@ -8,6 +8,10 @@ import {
   getPreferredServer,
   normalizeServer,
 } from "./auctionServers";
+import {
+  getPrivacyConsent,
+  optionalServicesConsentEvent,
+} from "./privacyPreferences";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -29,14 +33,23 @@ export const db = initializeFirestore(app, {
     tabManager: persistentMultipleTabManager()
   })
 });
-// Defer Analytics until after first paint — removes it from the critical path
 let analytics = null;
-if (typeof window !== 'undefined') {
-  window.addEventListener('load', () => {
-    import('firebase/analytics').then(({ getAnalytics }) => {
+
+const initializeAnalytics = () => {
+  if (analytics || getPrivacyConsent() !== 'accepted') return;
+
+  import('firebase/analytics')
+    .then(({ getAnalytics }) => {
       analytics = getAnalytics(app);
+    })
+    .catch((error) => {
+      console.warn('[firebase] Optional analytics could not be initialized.', error);
     });
-  }, { once: true });
+};
+
+if (typeof window !== 'undefined') {
+  document.addEventListener(optionalServicesConsentEvent, initializeAnalytics);
+  initializeAnalytics();
 }
 export { analytics };
 

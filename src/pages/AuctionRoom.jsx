@@ -988,7 +988,7 @@ const AuctionRoom = () => {
    return (
       <div className="arena-canvas h-screen-safe bg-[#0d0d0d] text-white font-sans flex flex-col items-center overflow-hidden">
 
-         <header className="w-full h-14 compact:h-12 bg-black/40 backdrop-blur-md border-b border-white/5 flex flex-row items-center justify-between px-2.5 sm:px-4 md:px-6 z-50 gap-2 shrink-0">
+         <header className="auction-room-header w-full h-14 compact:h-12 bg-black/40 backdrop-blur-md border-b border-white/5 flex flex-row items-center justify-between px-2.5 sm:px-4 md:px-6 z-50 gap-2 shrink-0">
             <div className="flex items-center gap-1.5 sm:gap-4 shrink-0">
                <div className="flex items-center gap-1">
                   <span className="text-gray-500 text-[8px] sm:text-[10px] compact:text-[9px] font-black uppercase tracking-widest hidden xs:inline">ID:</span>
@@ -1208,7 +1208,7 @@ const AuctionRoom = () => {
 
             <div className={`${mobileTab === 'arena' ? 'flex' : 'hidden'} md:flex flex-col flex-1 h-full overflow-hidden`}>
                {/* Center Fixed Header */}
-               <div className="min-h-12 border-b border-white/5 bg-white/[0.01] flex items-center px-2.5 sm:px-6 md:px-8 w-full shrink-0 py-2 md:py-0 overflow-x-auto no-scrollbar">
+               <div className="auction-center-header min-h-12 border-b border-white/5 bg-white/[0.01] flex items-center px-2.5 sm:px-6 md:px-8 w-full shrink-0 py-2 md:py-0 overflow-x-auto no-scrollbar">
                   <div className="w-full max-w-4xl mx-auto flex items-center justify-between gap-1.5 sm:gap-3 md:gap-4 min-w-0">
                      <div className="flex items-center gap-1.5 sm:gap-3 md:gap-4 min-w-0 flex-1">
                         <div className="px-2 sm:px-2.5 py-0.5 bg-yellow-500/10 border border-yellow-500/20 rounded-full shrink-0 flex items-center">
@@ -1233,7 +1233,7 @@ const AuctionRoom = () => {
                </div>
 
                {/* Center Scrollable Main Body */}
-               <main className="flex-1 overflow-y-auto p-4 md:p-8 compact:p-4 flex flex-col items-center custom-scrollbar">
+               <main className="auction-center-main flex-1 overflow-y-auto p-4 md:p-8 compact:p-4 flex flex-col items-center custom-scrollbar">
                   <div className="w-full max-w-4xl flex flex-col gap-4 md:gap-6">
                      <AnimatePresence mode="wait">
                         {(displayAuctionState?.status === 'sold' || displayAuctionState?.status === 'unsold') ? (() => {
@@ -1332,22 +1332,22 @@ const AuctionRoom = () => {
                             );
                          })() : (
                            <motion.div key="player-card" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="w-full flex-col gap-4 md:gap-6 flex">
-                              <div className="arena-live-card border border-white/[0.08] rounded-[2rem] overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.6)] relative min-h-[400px] lg:min-h-0">
+                              <div className="arena-live-card auction-live-card-shell border border-white/[0.08] rounded-[2rem] overflow-hidden shadow-[0_24px_80px_rgba(0,0,0,0.6)] relative min-h-[400px] lg:min-h-0">
                                  <div className="absolute top-0 inset-x-0 h-1 bg-white/5">
                                     <motion.div initial={{ width: "100%" }} animate={{ width: `${timerPercent}%` }} className={`h-full transition-colors duration-1000 ${isTimerPaused ? 'bg-gray-500' : secondsRemaining < 5 ? 'bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)]' : 'bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.5)]'}`} />
                                  </div>
-                                 <div className="relative z-10 px-4 pt-4 sm:px-6 lg:px-5 xl:px-10">
+                                 <div className="auction-live-label-row relative z-10 px-4 pt-4 sm:px-6 lg:px-5 xl:px-10">
                                     <div className="auction-live-label">
                                        <Gavel size={12} />
                                        Player on the block
                                     </div>
                                  </div>
-                                 <div className="p-4 sm:p-6 lg:p-5 xl:p-10 flex flex-col lg:flex-row items-center gap-4 sm:gap-6 lg:gap-5 xl:gap-10">
-                                    <div className="w-28 h-28 sm:w-36 sm:h-36 lg:w-36 lg:h-48 xl:w-60 xl:h-80 bg-gradient-to-b from-white/10 to-transparent rounded-2xl sm:rounded-[2rem] overflow-hidden border border-white/10 relative z-10 shadow-[0_12px_40px_rgba(0,0,0,0.4)] group hover:scale-[1.02] transition-transform duration-500 shrink-0">
+                                 <div className="auction-live-content p-4 sm:p-6 lg:p-5 xl:p-10 flex flex-col lg:flex-row items-center gap-4 sm:gap-6 lg:gap-5 xl:gap-10">
+                                    <div className="auction-player-image w-28 h-28 sm:w-36 sm:h-36 lg:w-36 lg:h-48 xl:w-60 xl:h-80 bg-gradient-to-b from-white/10 to-transparent rounded-2xl sm:rounded-[2rem] overflow-hidden border border-white/10 relative z-10 shadow-[0_12px_40px_rgba(0,0,0,0.4)] group hover:scale-[1.02] transition-transform duration-500 shrink-0">
                                        <img src={currentPlayer.image} alt={currentPlayer.name} decoding="async" className="w-full h-full object-cover" />
                                     </div>
-                                    <div className="flex-1 min-w-0 flex flex-col gap-4 xl:gap-6 w-full text-center lg:text-left">
-                                       <div>
+                                    <div className="auction-player-details flex-1 min-w-0 flex flex-col gap-4 xl:gap-6 w-full text-center lg:text-left">
+                                       <div className="auction-player-identity">
                                           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 mb-2 xl:mb-4">
                                              <span className="bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[8px] md:text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">{currentPlayer.role}</span>
                                              <span className="bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[8px] md:text-[9px] font-black px-2.5 py-1 rounded-full uppercase tracking-widest">{currentPlayer.type}</span>
@@ -1367,7 +1367,7 @@ const AuctionRoom = () => {
                                            }[colsCount] || 'xl:grid-cols-4';
                                            
                                            return (
-                                              <div className={`grid grid-cols-2 ${colClass} gap-2 xl:gap-3 bg-white/[0.02] p-2.5 lg:p-3 xl:p-4 rounded-2xl border border-white/[0.04] backdrop-blur-md`}>
+                                              <div className={`auction-player-stats grid grid-cols-2 ${colClass} gap-2 xl:gap-3 bg-white/[0.02] p-2.5 lg:p-3 xl:p-4 rounded-2xl border border-white/[0.04] backdrop-blur-md`}>
                                                  {entries.map(([key, value], index) => {
                                                     const labelMap = {
                                                        matches: 'Matches', runs: 'Runs', wickets: 'Wickets',
@@ -1393,7 +1393,7 @@ const AuctionRoom = () => {
                                               </div>
                                            );
                                         })()}
-                                       <div className="flex flex-wrap items-center justify-between gap-2 mt-2 xl:mt-4">
+                                       <div className="auction-player-bid flex flex-wrap items-center justify-between gap-2 mt-2 xl:mt-4">
                                           <div className="text-left">
                                              <span className="text-[9px] xl:text-[10px] font-black text-gray-500 uppercase tracking-widest block mb-1">Current Bid</span>
                                              <div className="flex items-center gap-2 sm:gap-3">
@@ -1426,14 +1426,14 @@ const AuctionRoom = () => {
                                        </div>
                                     </div>
                                  </div>
-                                 <div className="bg-black/20 border-t border-white/5 p-3 sm:p-4 xl:p-6 flex flex-col gap-3">
+                                 <div className="auction-live-footer bg-black/20 border-t border-white/5 p-3 sm:p-4 xl:p-6 flex flex-col gap-3">
                                     {/* Franchise Quick Stats Bar right above Bid button (Mobile view only) */}
                                     {team && (() => {
                                        const osCount = countOverseas(team.squad, IPL_PLAYERS);
                                        const totalBudget = toFiniteNumber(currentAuction?.settings?.budget, 120);
 
                                        return (
-                                          <div className="flex md:hidden items-center justify-between bg-white/[0.03] border border-white/10 px-2.5 sm:px-4 py-2 rounded-xl text-[9px] sm:text-xs font-bold text-gray-300">
+                                          <div className="auction-franchise-quick-stats flex md:hidden items-center justify-between bg-white/[0.03] border border-white/10 px-2.5 sm:px-4 py-2 rounded-xl text-[9px] sm:text-xs font-bold text-gray-300">
                                              <div className="flex items-center gap-1" title="Squad Count">
                                                 <span className="text-gray-500 uppercase font-black text-[8px] sm:text-[10px]">Squad:</span>
                                                 <span className="text-blue-400 font-extrabold">{team.squad?.length || 0}/{toFiniteNumber(currentAuction?.squadLimit, 25)}</span>
@@ -1457,7 +1457,7 @@ const AuctionRoom = () => {
                                        );
                                     })()}
 
-                                    <div className="flex gap-3 md:gap-4">
+                                    <div className="auction-bid-actions flex gap-3 md:gap-4">
                                        <button
                                           onClick={handleBid}
                                           disabled={spectateMode || !team || secondsRemaining === 0 || displayAuctionState?.status !== 'bidding' || displayAuctionState?.highBidderId === user?.uid}

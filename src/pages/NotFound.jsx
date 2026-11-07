@@ -22,20 +22,20 @@ export default function NotFound() {
       </div>
 
       {/* Main Content Card */}
-      <div className="flex-1 flex items-center justify-center p-4 py-16 relative z-10">
+      <div className="flex-1 flex items-center justify-center p-3 sm:p-4 py-8 sm:py-16 relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.4 }}
-          className="max-w-md w-full bg-[#0a0a0b] border border-white/10 rounded-[2.5rem] p-8 text-center backdrop-blur-2xl shadow-2xl relative"
+          className="max-w-md w-full bg-[#0a0a0b] border border-white/10 rounded-[1.75rem] sm:rounded-[2.5rem] p-5 sm:p-8 text-center backdrop-blur-2xl shadow-2xl relative"
         >
           {/* Out of Bounds Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 font-black text-xs uppercase tracking-[0.2em] mb-6">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 rounded-full bg-red-500/10 border border-red-500/30 text-red-400 font-black text-[10px] sm:text-xs uppercase tracking-[0.2em] mb-4 sm:mb-6">
             <Trophy className="w-4 h-4 text-[#ff5500]" /> OUT OF BOUNDS!
           </div>
 
           {/* Big 404 Text */}
-          <h1 className="text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#ff5500] via-amber-300 to-[#ffaa00] mb-2 tracking-tight">
+          <h1 className="text-6xl sm:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#ff5500] via-amber-300 to-[#ffaa00] mb-2 tracking-tight">
             404
           </h1>
 
@@ -43,7 +43,7 @@ export default function NotFound() {
             Unsold Route / Page Not Found
           </h2>
 
-          <p className="text-gray-400 text-xs sm:text-sm font-medium leading-relaxed mb-8">
+          <p className="text-gray-400 text-xs sm:text-sm font-medium leading-relaxed mb-5 sm:mb-8">
             This bid was rejected by the Third Umpire! The URL or lobby code you are looking for doesn't exist or has expired.
           </p>
 

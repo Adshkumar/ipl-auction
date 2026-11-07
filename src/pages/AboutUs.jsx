@@ -8,22 +8,17 @@ import {
   Radio,
   Users,
   Award,
-  BookOpen,
   ExternalLink,
   Code2,
-  Cpu,
-  Trophy,
   ArrowRight,
-  Coins,
-  Sparkles,
 } from 'lucide-react';
 import Footer from '../components/Footer';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 
 const AboutUs = () => {
   useDocumentTitle(
-    'About Us | PurseWar — The Premier IPL Auction Simulator',
-    'Learn about PurseWar, our platform mission, AI bot valuation engine, local hotspot technology, and engineering standards.'
+    'About PurseWar | Cricket Auction Simulator',
+    'Learn how PurseWar auction rooms, game modes, local play, privacy choices, and post-auction squad reviews work.'
   );
 
   useEffect(() => {
@@ -33,12 +28,13 @@ const AboutUs = () => {
   const [activeSection, setActiveSection] = useState('mission');
 
   const sections = [
-    { id: 'mission', label: '1. Mission & Philosophy' },
-    { id: 'architecture', label: '2. Simulation Architecture' },
-    { id: 'hotspot', label: '3. Zero-Cloud Engineering' },
-    { id: 'roster-rules', label: '4. Purse & Roster Integrity' },
-    { id: 'creator', label: '5. Creator & Standards' },
-    { id: 'disclaimer', label: '6. Non-Affiliation Disclaimer' },
+    { id: 'mission', label: '1. What PurseWar is' },
+    { id: 'features', label: '2. What you can do' },
+    { id: 'technology', label: '3. How rooms work' },
+    { id: 'modes', label: '4. Auction modes' },
+    { id: 'privacy', label: '5. Privacy and data' },
+    { id: 'creator', label: '6. Creator' },
+    { id: 'disclaimer', label: '7. Independent project' },
   ];
 
   useEffect(() => {
@@ -91,7 +87,7 @@ const AboutUs = () => {
           <ChevronRight size={14} className="text-gray-600" />
           <span className="text-gray-500">Resources</span>
           <ChevronRight size={14} className="text-gray-600" />
-          <span className="text-white">About Us</span>
+          <span className="text-white">About PurseWar</span>
         </div>
 
         <div className="flex items-center gap-3">
@@ -111,7 +107,7 @@ const AboutUs = () => {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex flex-col lg:flex-row gap-8 lg:gap-24 items-start w-full flex-1">
+      <div className="resource-page-layout max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-5 sm:py-12 flex flex-col lg:flex-row gap-5 lg:gap-24 items-start w-full flex-1">
         {/* Left TOC */}
         <aside className="hidden lg:block w-64 shrink-0 sticky top-28">
           <h3 className="text-white font-semibold text-sm mb-4">On this page</h3>
@@ -133,18 +129,18 @@ const AboutUs = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 max-w-3xl w-full pb-20">
-          <div className="mb-8 sm:mb-12 border-b border-white/10 pb-6 sm:pb-8">
+        <main className="resource-page-content flex-1 max-w-3xl w-full pb-8 sm:pb-20">
+          <div className="mb-6 sm:mb-12 border-b border-white/10 pb-5 sm:pb-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#ff5500]/10 border border-[#ff5500]/30 text-[#ff5500] text-xs font-semibold uppercase tracking-wider mb-3">
               <Award size={13} />
-              <span>Platform Overview & Engineering</span>
+              <span>Product, features, and how it works</span>
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-4">
               About PurseWar
             </h1>
-            <p className="text-sm text-gray-500 mb-6">Last updated: October 2026 • Platform Philosophy</p>
+            <p className="text-sm text-gray-500 mb-4">Updated November 7, 2026</p>
             <p className="text-base text-[#E5E5E5] leading-relaxed">
-              PurseWar is an advanced, real-time multiplayer cricket simulation platform crafted to recreate the strategic tension, purse management, and paddle battles of the official Indian Premier League (IPL) Mega Auction.
+              PurseWar is a browser-based cricket auction simulator. Create or join a room, choose a franchise, bid on players with friends or bots, manage a virtual purse, and compare the squads you build. It is an independent fan project—not an official IPL product.
             </p>
           </div>
 
@@ -165,30 +161,30 @@ const AboutUs = () => {
             </nav>
           </details>
 
-          <div className="space-y-12 sm:space-y-16">
+          <div className="space-y-8 sm:space-y-16">
             
-            {/* 1. Mission & Philosophy */}
+            {/* 1. What PurseWar is */}
             <section id="mission" className="scroll-mt-24">
-              <h2 className="text-xl font-semibold text-white mb-2">1. Mission & Philosophy</h2>
+              <h2 className="text-xl font-semibold text-white mb-2">1. What PurseWar is</h2>
               <p className="text-sm text-gray-400 mb-6 leading-relaxed">
-                Why we built PurseWar and how it bridges the gap between passive cricket viewing and tactical roster construction.
+                A social game about auction decisions: what to bid, when to stop, and how to balance a franchise squad.
               </p>
 
               <div className="border border-white/10 rounded-md p-5 sm:p-6 bg-white/[0.01] space-y-4">
                 <p className="text-sm text-gray-300 leading-relaxed font-normal">
-                  Every year, millions of cricket enthusiasts worldwide watch team owners and analysts commit hundreds of crores at the IPL Mega Auction table. While fantasy leagues focus only on match points, the true foundation of every championship franchise is built in the auction hall—through purse discipline, smart scouting, role balancing, and bidding composure under time pressure.
+                  Host a private room for friends, join a public room when one is available, or use the solo-friendly bot option. The live room presents the player, current bid, countdown, team purse, and squad status so participants can make decisions together.
                 </p>
                 <p className="text-sm text-gray-300 leading-relaxed font-normal">
-                  PurseWar was founded to make this tactical auction masterclass accessible to everyone. Whether you are hosting a high-stakes league with 9 friends or playing offline solo against our autonomous AI bot franchises, our simulator delivers realistic bidding dynamics, authentic purse mathematics, and instant feedback at professional esports standards.
+                  All purse amounts, bids, ratings, and results are part of the simulation. PurseWar does not run real-money auctions, betting, or fantasy payouts.
                 </p>
               </div>
             </section>
 
-            {/* 2. Simulation Architecture */}
-            <section id="architecture" className="scroll-mt-24">
-              <h2 className="text-xl font-semibold text-white mb-2">2. Simulation Architecture</h2>
+            {/* 2. Product features */}
+            <section id="features" className="scroll-mt-24">
+              <h2 className="text-xl font-semibold text-white mb-2">2. What you can do</h2>
               <p className="text-sm text-gray-400 mb-6 leading-relaxed">
-                Under the hood: multi-server realtime state distribution, sub-second bid resolution, and AI valuation mechanics.
+                The tools are designed to support a complete room session, from the first invite to post-auction squad review.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -196,9 +192,9 @@ const AboutUs = () => {
                   <div className="w-8 h-8 rounded-lg bg-orange-500/10 border border-orange-500/20 text-[#ff5500] flex items-center justify-center mb-3">
                     <Brain size={16} />
                   </div>
-                  <h3 className="text-sm font-semibold text-white mb-1.5">Autonomous AI Valuation</h3>
+                  <h3 className="text-sm font-semibold text-white mb-1.5">Live multiplayer auctions</h3>
                   <p className="text-xs text-gray-400 leading-relaxed">
-                    Bots evaluate base prices, role multipliers, squad balance, and available purse capacity. AI franchises emulate human tension with dynamic hesitation and clutch bidding.
+                    Create a room, invite managers with its room link or code, claim a team, and follow bids and the auction timer as the room updates.
                   </p>
                 </div>
 
@@ -206,9 +202,9 @@ const AboutUs = () => {
                   <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 flex items-center justify-center mb-3">
                     <Radio size={16} />
                   </div>
-                  <h3 className="text-sm font-semibold text-white mb-1.5">Multi-Region Redundancy</h3>
+                  <h3 className="text-sm font-semibold text-white mb-1.5">Bot managers</h3>
                   <p className="text-xs text-gray-400 leading-relaxed">
-                    State synchronization distributes bids across secondary Firebase instances and Supabase with automatic failover routing to maintain zero downtime.
+                    Hosts can fill open franchises with computer-controlled bidders for solo or smaller-group sessions. Their bids follow the game’s configured purse and squad constraints.
                   </p>
                 </div>
 
@@ -216,9 +212,9 @@ const AboutUs = () => {
                   <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3">
                     <ShieldCheck size={16} />
                   </div>
-                  <h3 className="text-sm font-semibold text-white mb-1.5">Deterministic Clock Offsets</h3>
+                  <h3 className="text-sm font-semibold text-white mb-1.5">Squad tracking</h3>
                   <p className="text-xs text-gray-400 leading-relaxed">
-                    Time drift calibration guarantees that all 10 participants observe identical countdown tick intervals, preventing ping advantages on paddle raises.
+                    Review player roles, team spending, remaining purse, roster counts, and overseas-player counts during and after a draft.
                   </p>
                 </div>
 
@@ -226,79 +222,92 @@ const AboutUs = () => {
                   <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center mb-3">
                     <Users size={16} />
                   </div>
-                  <h3 className="text-sm font-semibold text-white mb-1.5">Optimistic UI Reconciliation</h3>
+                  <h3 className="text-sm font-semibold text-white mb-1.5">Post-auction review</h3>
                   <p className="text-xs text-gray-400 leading-relaxed">
-                    Immediate visual feedback on local paddle clicks with background authoritative confirmation ensures smooth gameplay even over variable mobile connections.
+                    See completed squads and ratings, save a mode-sized lineup, compare submitted lineups when the host reveals them, and share squad cards.
                   </p>
                 </div>
               </div>
             </section>
 
-            {/* 3. Hotspot & Zero-Cloud Engineering */}
-            <section id="hotspot" className="scroll-mt-24">
-              <h2 className="text-xl font-semibold text-white mb-2">3. Zero-Cloud Engineering</h2>
+            {/* 3. Technology and room types */}
+            <section id="technology" className="scroll-mt-24">
+              <h2 className="text-xl font-semibold text-white mb-2">3. How rooms work</h2>
               <p className="text-sm text-gray-400 mb-6 leading-relaxed">
-                Offline Hotspot mode delivers local-area network gaming without reliance on external cloud servers.
+                Cloud and local room options use different storage and synchronization paths.
               </p>
 
               <div className="border border-white/10 rounded-md p-5 sm:p-6 bg-white/[0.01] space-y-4">
                 <p className="text-sm text-gray-300 leading-relaxed">
-                  Most modern multiplayer web applications rely exclusively on cloud databases like Firebase or WebSockets hosted on centralized servers. If internet connectivity drops, or cloud rate limits are reached, gameplay freezes.
+                  Cloud rooms use Firebase Realtime Database for live state and Supabase for parts of room discovery, history, and team records. The app can offer more than one configured auction server; the room’s selected server is shown in the interface.
                 </p>
                 <p className="text-sm text-gray-300 leading-relaxed">
-                  To eliminate this dependency, PurseWar includes an in-memory local network engine. By connecting to a shared mobile hotspot or local Wi-Fi router, participants synchronize state directly over LAN with sub-5ms latency and zero mobile data consumed. Once the auction concludes, squads can optionally be archived or exported as custom high-resolution cards.
+                  Offline / Hotspot rooms use local browser storage and local synchronization mechanisms. The exact ability to synchronize across devices depends on the selected mode and whether the local bridge is available. Local mode should not be assumed to provide cloud backup or cross-device recovery.
                 </p>
               </div>
             </section>
 
-            {/* 4. Roster & Purse Accuracy */}
-            <section id="roster-rules" className="scroll-mt-24">
-              <h2 className="text-xl font-semibold text-white mb-2">4. Purse & Roster Integrity</h2>
+            {/* 4. Auction modes */}
+            <section id="modes" className="scroll-mt-24">
+              <h2 className="text-xl font-semibold text-white mb-2">4. Auction modes and rules</h2>
               <p className="text-sm text-gray-400 mb-6 leading-relaxed">
-                Accurate mathematical compliance with official BCCI regulations.
+                Mega, Classic, and Sprint formats use different squad sizes and constraints. The host chooses the mode and room settings; check the lobby before the auction begins.
               </p>
 
               <div className="border border-white/10 rounded-md p-5 bg-white/[0.01]">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                   <div className="p-3 rounded bg-white/[0.02] border border-white/5">
-                    <span className="font-mono text-[10px] text-gray-500 uppercase block mb-1">Salary Cap</span>
-                    <span className="text-sm font-bold text-white block">₹120.00 Crore</span>
-                    <span className="text-gray-400 text-[11px] mt-1 block">Scaled to ₹60 Cr / ₹30 Cr in sprint modes</span>
+                    <span className="font-mono text-[10px] text-gray-500 uppercase block mb-1">Mega</span>
+                    <span className="text-sm font-bold text-white block">Up to 25 players</span>
+                    <span className="text-gray-400 text-[11px] mt-1 block">Room settings show budget and overseas limit</span>
                   </div>
 
                   <div className="p-3 rounded bg-white/[0.02] border border-white/5">
-                    <span className="font-mono text-[10px] text-gray-500 uppercase block mb-1">Squad Range</span>
-                    <span className="text-sm font-bold text-white block">18 – 25 Players</span>
-                    <span className="text-gray-400 text-[11px] mt-1 block">Hard ceiling of 8 overseas acquisitions</span>
+                    <span className="font-mono text-[10px] text-gray-500 uppercase block mb-1">Classic</span>
+                    <span className="text-sm font-bold text-white block">11 players</span>
+                    <span className="text-gray-400 text-[11px] mt-1 block">Starting-lineup sized room</span>
                   </div>
 
                   <div className="p-3 rounded bg-white/[0.02] border border-white/5">
-                    <span className="font-mono text-[10px] text-gray-500 uppercase block mb-1">Paddle Increments</span>
-                    <span className="text-sm font-bold text-white block">+₹20L / +₹25L</span>
-                    <span className="text-gray-400 text-[11px] mt-1 block">Dynamic tier upgrade once past ₹5.00 Cr</span>
+                    <span className="font-mono text-[10px] text-gray-500 uppercase block mb-1">Sprint</span>
+                    <span className="text-sm font-bold text-white block">5 players</span>
+                    <span className="text-gray-400 text-[11px] mt-1 block">Compact draft with mode-specific limits</span>
                   </div>
                 </div>
+                <p className="mt-4 text-xs leading-relaxed text-gray-500">
+                  Rules are configurable and can vary by room. PurseWar is a fan-made simulation and does not claim that every setting reproduces current official competition regulations.
+                </p>
               </div>
             </section>
 
-            {/* 5. Creator & Standards */}
+            <section id="privacy" className="scroll-mt-24">
+              <h2 className="text-xl font-semibold text-white mb-2">5. Privacy and data</h2>
+              <p className="text-sm text-gray-400 mb-4 leading-relaxed">
+                Account type, room visibility, chat, feedback, browser storage, and optional analytics all affect what information is handled.
+              </p>
+              <div className="border border-white/10 rounded-md p-5 sm:p-6 bg-white/[0.01] space-y-3">
+                <p className="text-sm text-gray-300 leading-relaxed">Google and guest authentication are provided through Firebase. Cloud auction state uses Firebase; Supabase supports parts of room discovery and history. Feedback sent through the form is stored for review.</p>
+                <p className="text-sm text-gray-300 leading-relaxed">Optional analytics and advertising only load after you accept them. Local browser storage is used for preferences and local-room data. Visit the <Link to="/privacy" className="text-[#f5bd55] underline underline-offset-2 hover:text-white">Privacy Policy</Link> for data details and requests.</p>
+              </div>
+            </section>
+
             <section id="creator" className="scroll-mt-24">
-              <h2 className="text-xl font-semibold text-white mb-2">5. Creator & Standards</h2>
+              <h2 className="text-xl font-semibold text-white mb-2">6. Creator</h2>
               <p className="text-sm text-gray-400 mb-6 leading-relaxed">
-                The developer and engineering philosophy behind the project.
+                PurseWar is an independently maintained project by Adarsh Kumar.
               </p>
 
               <div className="border border-white/10 rounded-md p-5 sm:p-6 bg-white/[0.01] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
                 <div>
                   <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold text-[#ff5500] uppercase tracking-wider mb-2">
                     <Code2 size={14} />
-                    <span>Lead Architect & Maintainer</span>
+                    <span>Creator & Maintainer</span>
                   </div>
                   <h3 className="text-xl font-bold text-white mb-2">
                     Adarsh Kumar
                   </h3>
                   <p className="text-xs sm:text-sm text-gray-400 leading-relaxed font-normal max-w-xl">
-                    Software engineer and cricket simulation architect. PurseWar is maintained with continuous roster revisions, performance profiling, and community-driven features to guarantee an authentic, transparent, and responsive simulator for cricket fans worldwide.
+                    PurseWar is built and maintained as a cricket auction game. Features and player data may change as the app evolves; feedback and bug reports help guide improvements.
                   </p>
                 </div>
 
@@ -325,15 +334,14 @@ const AboutUs = () => {
               </div>
             </section>
 
-            {/* 6. Non-Affiliation Disclaimer */}
             <section id="disclaimer" className="scroll-mt-24">
-              <h2 className="text-xl font-semibold text-white mb-2">6. Non-Affiliation Disclaimer</h2>
+              <h2 className="text-xl font-semibold text-white mb-2">7. Independent fan project</h2>
               <div className="border border-white/10 rounded-md p-5 bg-white/[0.01] text-xs text-gray-400 leading-relaxed space-y-2">
                 <p>
-                  PurseWar is an independent fan-created simulation project developed strictly for educational and entertainment purposes. PurseWar is not affiliated with, endorsed by, or sponsored by the Board of Control for Cricket in India (BCCI), the Indian Premier League (IPL), or any participating franchise.
+                  PurseWar is an independent fan-created simulation for entertainment. It is not affiliated with, endorsed by, or sponsored by the Board of Control for Cricket in India (BCCI), the Indian Premier League (IPL), or any participating franchise.
                 </p>
                 <p>
-                  All franchise trademarks, team names, logos, player names, and associated likenesses remain the sole intellectual property of their respective rights holders.
+                  Team names, marks, logos, player names, and images belong to their respective rights holders. Their appearance here does not imply endorsement.
                 </p>
               </div>
             </section>

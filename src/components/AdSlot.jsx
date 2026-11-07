@@ -1,18 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  adsenseClientId,
+  getPrivacyConsent,
+  privacyPreferenceChangedEvent,
+} from '../lib/privacyPreferences';
 
 const AdSlot = ({ slot, className = '', label = 'Advertisement' }) => {
-  const clientId = import.meta.env.VITE_ADSENSE_CLIENT_ID;
-  const canRenderAd = clientId && slot;
+  const clientId = adsenseClientId;
+  const [hasOptionalConsent, setHasOptionalConsent] = useState(
+    () => getPrivacyConsent() === 'accepted'
+  );
+  const canRenderAd = hasOptionalConsent && clientId && slot;
+
+  useEffect(() => {
+    const updateConsent = () => {
+      setHasOptionalConsent(getPrivacyConsent() === 'accepted');
+    };
+
+    document.addEventListener(privacyPreferenceChangedEvent, updateConsent);
+    return () => document.removeEventListener(privacyPreferenceChangedEvent, updateConsent);
+  }, []);
 
   useEffect(() => {
     if (!canRenderAd) return;
 
-    // The loader also ships in index.html so Auto ads work site-wide; reuse it
-    // instead of injecting a second copy when a manual slot is added later.
-    const scriptId = 'google-adsense-script';
     if (!document.querySelector('script[src*="adsbygoogle.js"]')) {
       const script = document.createElement('script');
-      script.id = scriptId;
+      script.id = 'google-adsense-script';
       script.async = true;
       script.crossOrigin = 'anonymous';
       script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${clientId}`;

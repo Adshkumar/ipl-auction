@@ -713,7 +713,7 @@ const AdminPanel = () => {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-6 sm:py-8 z-10 space-y-6 sm:space-y-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 py-4 sm:py-8 z-10 space-y-4 sm:space-y-8">
         {/* Error Alert */}
         {error && (
           <motion.div

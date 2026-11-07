@@ -265,7 +265,7 @@ const AuctionSummary = () => {
 
   if (!activeAuction && summaryError) {
     return (
-      <div className="h-screen-safe bg-[#050505] text-white flex flex-col items-center justify-center p-8 text-center">
+      <div className="h-screen-safe bg-[#050505] text-white flex flex-col items-center justify-center p-4 sm:p-8 text-center">
         <h2 className="text-xl font-black italic tracking-widest uppercase text-red-400 mb-2">Summary Unavailable</h2>
         <p className="text-xs text-gray-400 font-bold uppercase tracking-widest mb-6">{summaryError}</p>
         <button
@@ -284,9 +284,9 @@ const AuctionSummary = () => {
 
   if (!serverReady || (loading && !activeAuction) || (!activeAuction && summaryLoading)) {
     return (
-      <div className="h-screen-safe bg-[#050505] text-white flex flex-col items-center justify-center p-8 text-center">
-        <div className="w-20 h-20 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin mb-8" />
-        <h2 className="text-2xl font-black italic tracking-widest uppercase animate-pulse text-gray-400">Loading Summary...</h2>
+      <div className="h-screen-safe bg-[#050505] text-white flex flex-col items-center justify-center p-4 sm:p-8 text-center">
+        <div className="w-14 h-14 sm:w-20 sm:h-20 border-4 border-orange-500/20 border-t-orange-500 rounded-full animate-spin mb-5 sm:mb-8" />
+        <h2 className="text-xl sm:text-2xl font-black italic tracking-widest uppercase animate-pulse text-gray-400">Loading Summary...</h2>
       </div>
     );
   }
@@ -301,13 +301,13 @@ const AuctionSummary = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:12px_12px] opacity-20" />
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-8 md:py-12">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8 md:py-12">
         
         {/* Header Section */}
         <motion.header 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 sm:mb-10 space-y-3 sm:space-y-4"
+          className="mb-4 sm:mb-10 space-y-2 sm:space-y-4"
         >
           {/* Top Bar with Badges + Menu Button */}
           <div className="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
@@ -336,7 +336,7 @@ const AuctionSummary = () => {
         </motion.header>
 
         {/* Tab Navigation */}
-        <div className="mb-6 sm:mb-12">
+        <div className="mb-4 sm:mb-12">
           <div className="bg-white/5 backdrop-blur-3xl p-1 sm:p-1.5 rounded-2xl sm:rounded-[2rem] border border-white/10 grid grid-cols-2 sm:flex sm:justify-center gap-1 sm:gap-2 max-w-full sm:max-w-max mx-auto">
             {[
               { id: 'squads', label: 'Squads', fullLabel: 'Team Squads', icon: Users },
@@ -553,7 +553,7 @@ const AuctionSummary = () => {
                         >
                           <div 
                              ref={el => teamCardRefs.current[t.id] = el}
-                             className="bg-[#0b0c10] border-x border-b border-white/10 rounded-b-2xl sm:rounded-b-[3rem] p-4 sm:p-8 space-y-6 sm:space-y-12 relative overflow-hidden"
+                             className="bg-[#0b0c10] border-x border-b border-white/10 rounded-b-2xl sm:rounded-b-[3rem] p-3 sm:p-8 space-y-4 sm:space-y-12 relative overflow-hidden"
                           >
                              {/* Watermark Logo for Exported Image */}
                              <div className="absolute right-4 top-4 w-32 h-32 opacity-5 pointer-events-none grayscale">

@@ -1,26 +1,39 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Cookie, X, Check } from 'lucide-react'
+// `motion` is used only in JSX; core no-unused-vars can't detect that.
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from 'framer-motion'
+import { getPrivacyConsent, setPrivacyConsent } from '../lib/privacyPreferences'
 
 export default function CookieConsent() {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookie_consent_status')
-    if (!consent) {
+    if (!getPrivacyConsent()) {
       const timer = setTimeout(() => setIsVisible(true), 1200)
-      return () => clearTimeout(timer)
+      const openPreferences = () => {
+        clearTimeout(timer)
+        setIsVisible(true)
+      }
+      window.addEventListener('pursewar:open-privacy-preferences', openPreferences)
+      return () => {
+        clearTimeout(timer)
+        window.removeEventListener('pursewar:open-privacy-preferences', openPreferences)
+      }
     }
+    const openPreferences = () => setIsVisible(true)
+    window.addEventListener('pursewar:open-privacy-preferences', openPreferences)
+    return () => window.removeEventListener('pursewar:open-privacy-preferences', openPreferences)
   }, [])
 
   const handleAccept = () => {
-    localStorage.setItem('cookie_consent_status', 'accepted')
+    setPrivacyConsent('accepted')
     setIsVisible(false)
   }
 
   const handleDecline = () => {
-    localStorage.setItem('cookie_consent_status', 'declined')
+    setPrivacyConsent('declined')
     setIsVisible(false)
   }
 
@@ -42,7 +55,7 @@ export default function CookieConsent() {
                   <Cookie className="w-4 h-4" />
                 </div>
                 <h4 className="font-black text-xs uppercase tracking-wider text-white">
-                  Cookie & Privacy
+                  Privacy choices
                 </h4>
               </div>
               <button
@@ -56,7 +69,7 @@ export default function CookieConsent() {
 
             {/* Minimal Description */}
             <p className="text-[11px] text-gray-400 font-medium leading-relaxed">
-              We use essential storage & telemetry to keep auction bids synced in real-time.{' '}
+              Essential storage supports sign-in and rooms. Optional analytics and ads load only if you accept; declining does not block play.{' '}
               <Link to="/privacy" className="text-gray-300 underline hover:text-[#ff5500] transition-colors">
                 Privacy Policy
               </Link>
