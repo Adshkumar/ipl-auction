@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { shouldStickToBottom } from '../lib/auctionDisplay';
 
 
-const GIPHY_API_KEY = import.meta.env.VITE_GIPHY_API_KEY;
+const GIPHY_API_KEY = import.meta.env.VITE_GIPHY_API_KEY?.trim();
 
 const TextChat = ({ roomId, isCollapsed, onToggleCollapse }) => {
    const { messages, sendMessage } = useAuction();
@@ -81,6 +81,14 @@ const TextChat = ({ roomId, isCollapsed, onToggleCollapse }) => {
    const fetchGifs = useCallback(async (query = '') => {
       setIsSearchingGifs(true);
       setGifError('');
+      setSearchedGifs([]);
+
+      if (!GIPHY_API_KEY) {
+         setGifError('GIF search needs a GIPHY API key. Set VITE_GIPHY_API_KEY in your hosting build settings and redeploy.');
+         setIsSearchingGifs(false);
+         return;
+      }
+
       try {
          const url = query.trim()
             ? `https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(query.trim())}&limit=16&rating=g`
@@ -88,15 +96,20 @@ const TextChat = ({ roomId, isCollapsed, onToggleCollapse }) => {
 
          const res = await fetch(url);
          if (!res.ok) {
+            if (res.status === 401 || res.status === 403) {
+               throw new Error('Giphy rejected the API key. Check VITE_GIPHY_API_KEY.');
+            }
             throw new Error(`Giphy request failed with status ${res.status}`);
          }
          const json = await res.json();
          if (json && json.data) {
-            const list = json.data.map(item => ({
-               id: item.id,
-               name: item.title || 'GIF',
-               url: item.images?.fixed_height?.url || item.images?.original?.url
-            }));
+            const list = json.data
+               .map(item => ({
+                  id: item.id,
+                  name: item.title || 'GIF',
+                  url: item.images?.fixed_height?.url || item.images?.original?.url
+               }))
+               .filter(gif => gif.url);
             setSearchedGifs(list);
          } else {
             setSearchedGifs([]);
@@ -104,7 +117,9 @@ const TextChat = ({ roomId, isCollapsed, onToggleCollapse }) => {
       } catch (err) {
          console.error('[chat] Failed to load GIFs', err);
          setSearchedGifs([]);
-         setGifError('Could not load GIFs. Please try again.');
+         setGifError(err instanceof Error && err.message.includes('Giphy rejected')
+            ? err.message
+            : 'Could not load GIFs. Check your connection and try again.');
       } finally {
          setIsSearchingGifs(false);
       }

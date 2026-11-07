@@ -73,6 +73,7 @@ Deploy or run the latest version of PurseWar locally. No complex CLI is required
    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 
    VITE_CRICKET_API_KEY=your_cricapi_key
+   VITE_GIPHY_API_KEY=your_giphy_api_key
    ```
 
 3. **Start the local daemon**
@@ -82,7 +83,7 @@ Deploy or run the latest version of PurseWar locally. No complex CLI is required
 
 ### Deploying to Vercel
 
-Add the required `VITE_FIREBASE_*` and `VITE_SUPABASE_*` values from your local `.env` to the Vercel project's Environment Variables for the Production environment, then redeploy. Vite embeds these values at build time, so changing them requires a new deployment. Do not commit `.env`; add the values in Vercel under Project Settings > Environment Variables.
+Add the required `VITE_FIREBASE_*` and `VITE_SUPABASE_*` values from your local `.env` to the Vercel project's Environment Variables for the Production environment, then redeploy. For chat GIF search, also configure `VITE_GIPHY_API_KEY` with your GIPHY API key. Set the same variable in your hosting provider's build environment if deploying elsewhere. Vite embeds these values at build time, so changing them requires a new deployment. Do not commit `.env`; add the values in Vercel under Project Settings > Environment Variables.
 
 For Google sign-in, enable the Google provider in Firebase Authentication and add the exact Vercel hostname (`ipl-auction-blush-three.vercel.app`, without `https://`) under Firebase Authentication > Settings > Authorized domains. Add each production or preview hostname where users should be able to sign in.
 
