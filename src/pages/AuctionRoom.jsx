@@ -114,12 +114,21 @@ const AuctionRoom = () => {
       return params.get('spectate') === 'true';
    });
 
-   // Clear optimistic state when DB catches up
+   // Clear optimistic state when the server confirms the bid or advances the lot.
    useEffect(() => {
-      if (optimisticState && currentAuction?.currentAuction?.currentBid >= optimisticState.currentBid) {
+      const serverState = currentAuction?.currentAuction;
+      if (
+         optimisticState
+         && serverState
+         && (
+            serverState.playerId !== optimisticState.playerId
+            || serverState.currentBid >= optimisticState.currentBid
+            || serverState.status !== 'bidding'
+         )
+      ) {
          setOptimisticState(null);
       }
-   }, [currentAuction?.currentAuction?.currentBid, optimisticState]);
+   }, [currentAuction?.currentAuction, optimisticState]);
 
    const displayAuctionState = optimisticState || currentAuction?.currentAuction;
 
