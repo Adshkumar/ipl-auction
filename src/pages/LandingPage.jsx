@@ -11,6 +11,7 @@ import {
 } from "../lib/firebase";
 import { supabase } from "../lib/supabase";
 import { getGoogleSignInErrorMessage } from "../lib/firebaseAuthErrors";
+import { getFirebaseRtdbErrorMessage } from "../lib/firebaseRtdbErrors";
 import { generateRoomCode, normalizeRoomCode, isHotspotRoomCode } from "../lib/roomCodes";
 import { ref, remove } from "firebase/database";
 import {
@@ -552,7 +553,7 @@ const LandingPage = () => {
       // The landing page must stay browse-only; the room page will reconnect.
       goOfflineServer(getActiveServer());
       setError(
-        error.message || "Failed to create/join room. Please try again.",
+        getFirebaseRtdbErrorMessage(error, getServerMeta(selectedServer).label),
       );
       setTimeout(() => setError(""), 3000);
       setIsSubmitting(false);

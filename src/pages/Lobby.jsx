@@ -34,12 +34,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { TEAMS } from '../data/teams';
 import { getGoogleSignInErrorMessage } from '../lib/firebaseAuthErrors';
+import { getFirebaseRtdbErrorMessage } from '../lib/firebaseRtdbErrors';
 import { formatCrores, toFiniteNumber } from '../lib/auctionDisplay';
 import TextChat from '../components/TextChat';
 import Footer from '../components/Footer';
 import PageLoader from '../components/PageLoader';
 import useRoomServer from '../hooks/useRoomServer';
-import { withServerParam } from '../lib/auctionServers';
+import { getServerMeta, withServerParam } from '../lib/auctionServers';
 import { isHotspotRoomCode } from '../lib/roomCodes';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 
@@ -222,7 +223,7 @@ const Lobby = () => {
         navigate(withServerParam(`/auction/${id}`, server));
       } catch (error) {
         console.error('[lobby] Failed to start auction', error);
-        setActionError('Could not start the auction. Please try again.');
+        setActionError(getFirebaseRtdbErrorMessage(error, getServerMeta(server).label));
         setIsStarting(false);
       }
     }
