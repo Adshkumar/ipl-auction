@@ -285,68 +285,38 @@ const AuctionRoom = () => {
       }
    };
 
-   // Curated list of high-quality, natural-sounding English voice patterns
    const isIndianEnglishVoice = (voice) =>
       voice.lang.toLowerCase().replace('_', '-').startsWith('en-in');
 
    const getVoiceLabel = (name, lang = '') => {
       const cleanName = name.toLowerCase();
-      if (lang.toLowerCase().replace('_', '-').startsWith('en-in')) {
-         return "Indian English (Auctioneer style)";
-      }
-      if (cleanName.includes("neerja")) return "Neerja (Authentic Indian Female)";
-      if (cleanName.includes("rishi")) return "Rishi (Authentic Indian Male)";
-      if (cleanName.includes("daniel")) return "Daniel (Classic UK Auctioneer)";
-      if (cleanName.includes("david")) return "David (Professional Deep Male)";
-      if (cleanName.includes("samantha")) return "Samantha (Natural US Female)";
-      if (cleanName.includes("google us")) return "Google US English (Clear)";
-      if (cleanName.includes("google uk male")) return "Google UK Male (Sleek)";
-      if (cleanName.includes("google uk female")) return "Google UK Female (Refined)";
+      let label = name
+         .replace("Microsoft", "")
+         .replace("Google", "")
+         .replace("Desktop", "")
+         .replace("Natural", "")
+         .trim();
 
-      return name.replace("Microsoft", "").replace("Google", "").replace("Desktop", "").replace("Natural", "").trim();
+      if (cleanName.includes("neerja")) label = "Neerja";
+      else if (cleanName.includes("rishi")) label = "Rishi";
+      else if (cleanName.includes("daniel")) label = "Daniel";
+      else if (cleanName.includes("david")) label = "David";
+      else if (cleanName.includes("samantha")) label = "Samantha";
+
+      return lang ? `${label} (${lang})` : label;
    };
 
-   // Fetch browser English voices (curated list of 3-5 real-sounding voices)
+   // Browser voices vary by device and browser, so expose every available English option.
    useEffect(() => {
       if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
          const updateVoices = () => {
             const voices = window.speechSynthesis.getVoices();
-
-            const targetPatterns = [
-               "Google US English",
-               "Google UK English Male",
-               "Google UK English Female",
-               "Microsoft David",
-               "Neerja",
-               "Daniel",
-               "Samantha",
-               "Rishi"
-            ];
-
             let filtered = voices
-               .filter(v =>
-                  v.lang.toLowerCase().startsWith('en') &&
-                  (isIndianEnglishVoice(v) ||
-                     targetPatterns.some(pattern => v.name.toLowerCase().includes(pattern.toLowerCase())))
-               )
-               .sort((a, b) => Number(isIndianEnglishVoice(b)) - Number(isIndianEnglishVoice(a)));
-
-            // Deduplicate by display label, preferring "Online" or "Natural" high-quality voice versions
-            const uniqueMap = new Map();
-            filtered.forEach(v => {
-               const label = getVoiceLabel(v.name, v.lang);
-               const cleanName = v.name.toLowerCase();
-               if (!uniqueMap.has(label) || cleanName.includes("online") || cleanName.includes("natural")) {
-                  uniqueMap.set(label, v);
-               }
-            });
-            filtered = Array.from(uniqueMap.values());
-
-            if (filtered.length === 0) {
-               filtered = voices.filter(v => v.lang.startsWith('en')).slice(0, 5);
-            } else {
-               filtered = filtered.slice(0, 5);
-            }
+               .filter(v => v.lang.toLowerCase().replace('_', '-').startsWith('en'))
+               .sort((a, b) =>
+                  Number(isIndianEnglishVoice(b)) - Number(isIndianEnglishVoice(a)) ||
+                  a.name.localeCompare(b.name)
+               );
 
             setAvailableVoices(filtered);
 
