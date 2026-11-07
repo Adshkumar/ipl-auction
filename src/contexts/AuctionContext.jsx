@@ -468,10 +468,10 @@ export const AuctionProvider = ({ children }) => {
 
     const playerOrderRef = ref(rtdb, `auctions/${roomId}/playerOrder`);
     
-    // Store playerOrder in room node (matching RTDB rules) and attempt subnode update
+    // Keep the status update on its explicitly authorized path. The shuffled
+    // order has its own host-only RTDB path and may be denied by older rules.
     await updateRtdb(rtdbRoomRef, {
-      status: 'active',
-      playerOrder: randomizedIndices
+      status: 'active'
     });
 
     if (supabase) {
@@ -485,8 +485,11 @@ export const AuctionProvider = ({ children }) => {
 
     try {
       await set(playerOrderRef, randomizedIndices);
-    } catch {
-      // Graceful fallback if RTDB sub-path rule is pending deploy
+    } catch (error) {
+      console.warn(
+        '[auction] Could not store the shuffled player order; the auction will use its fallback order',
+        error,
+      );
     }
 
     const liveRef = ref(rtdb, `auctions/${roomId}/live`);
