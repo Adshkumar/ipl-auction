@@ -286,8 +286,14 @@ const AuctionRoom = () => {
    };
 
    // Curated list of high-quality, natural-sounding English voice patterns
-   const getVoiceLabel = (name) => {
+   const isIndianEnglishVoice = (voice) =>
+      voice.lang.toLowerCase().replace('_', '-').startsWith('en-in');
+
+   const getVoiceLabel = (name, lang = '') => {
       const cleanName = name.toLowerCase();
+      if (lang.toLowerCase().replace('_', '-').startsWith('en-in')) {
+         return "Indian English (Auctioneer style)";
+      }
       if (cleanName.includes("neerja")) return "Neerja (Authentic Indian Female)";
       if (cleanName.includes("rishi")) return "Rishi (Authentic Indian Male)";
       if (cleanName.includes("daniel")) return "Daniel (Classic UK Auctioneer)";
@@ -317,15 +323,18 @@ const AuctionRoom = () => {
                "Rishi"
             ];
 
-            let filtered = voices.filter(v =>
-               v.lang.startsWith('en') &&
-               targetPatterns.some(pattern => v.name.toLowerCase().includes(pattern.toLowerCase()))
-            );
+            let filtered = voices
+               .filter(v =>
+                  v.lang.toLowerCase().startsWith('en') &&
+                  (isIndianEnglishVoice(v) ||
+                     targetPatterns.some(pattern => v.name.toLowerCase().includes(pattern.toLowerCase())))
+               )
+               .sort((a, b) => Number(isIndianEnglishVoice(b)) - Number(isIndianEnglishVoice(a)));
 
             // Deduplicate by display label, preferring "Online" or "Natural" high-quality voice versions
             const uniqueMap = new Map();
             filtered.forEach(v => {
-               const label = getVoiceLabel(v.name);
+               const label = getVoiceLabel(v.name, v.lang);
                const cleanName = v.name.toLowerCase();
                if (!uniqueMap.has(label) || cleanName.includes("online") || cleanName.includes("natural")) {
                   uniqueMap.set(label, v);
@@ -343,7 +352,7 @@ const AuctionRoom = () => {
 
             // Set default selected voice
             if (!selectedVoiceName && filtered.length > 0) {
-               const defaultVoice = filtered.find(v =>
+               const defaultVoice = filtered.find(isIndianEnglishVoice) || filtered.find(v =>
                   v.name.includes("Neerja") ||
                   v.name.includes("Daniel") ||
                   v.name.includes("Rishi") ||
@@ -1862,7 +1871,7 @@ const AuctionRoom = () => {
                               >
                                  {availableVoices.map(v => (
                                     <option key={v.name} value={v.name} className="bg-[#0c0d12] text-white">
-                                       {getVoiceLabel(v.name)}
+                                       {getVoiceLabel(v.name, v.lang)}
                                     </option>
                                  ))}
                               </select>
