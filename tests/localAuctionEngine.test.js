@@ -13,6 +13,9 @@ import {
   pauseLocalAuction,
   resumeLocalAuction,
   endLocalAuction,
+  saveLocalPostAuctionLineup,
+  revealLocalLineupComparison,
+  writeLocalRoom,
   mergeLocalRooms,
   subscribeLocalRoom,
 } from '../src/lib/localAuctionEngine.js';
@@ -39,6 +42,50 @@ test('createLocalRoom creates a room with valid initial data', () => {
   assert.equal(room.players[0].team, 'MI');
   assert.ok(room.teams[`${roomId}_user_123`]);
   assert.equal(room.teams[`${roomId}_user_123`].budgetRemaining, 60.0);
+});
+
+test('classic local rooms use the 11-player squad limit', () => {
+  const roomId = 'HOTSPOT-CLASSIC';
+  createLocalRoom(
+    roomId,
+    'user_classic',
+    { name: 'Classic Manager', team: 'MI' },
+    'sprint11',
+    false,
+  );
+
+  assert.equal(readLocalRoom(roomId).squadLimit, 11);
+});
+
+test('local rooms persist manager lineups and host comparison reveal across merges', () => {
+  const roomId = 'HOTSPOT-LINEUP';
+  createLocalRoom(roomId, 'user_host', { name: 'Host', team: 'MI' }, 'mega');
+  const room = readLocalRoom(roomId);
+  room.status = 'completed';
+  room.teams[`${roomId}_user_host`].squad = Array.from({ length: 11 }, (_, index) => ({ id: `p${index}` }));
+  writeLocalRoom(roomId, room);
+
+  saveLocalPostAuctionLineup(
+    roomId,
+    'user_host',
+    'MI',
+    Array.from({ length: 11 }, (_, index) => `p${index}`),
+  );
+  revealLocalLineupComparison(roomId, 'user_host');
+
+  const savedRoom = readLocalRoom(roomId);
+  assert.deepEqual(savedRoom.lineups.user_host.startingXI, Array.from({ length: 11 }, (_, index) => `p${index}`));
+  assert.equal(savedRoom.lineupComparisonRevealed, true);
+
+  const staleSnapshot = {
+    id: roomId,
+    status: 'completed',
+    players: savedRoom.players,
+    teams: savedRoom.teams,
+  };
+  const mergedRoom = mergeLocalRooms(savedRoom, staleSnapshot);
+  assert.deepEqual(mergedRoom.lineups, savedRoom.lineups);
+  assert.equal(mergedRoom.lineupComparisonRevealed, true);
 });
 
 test('joinLocalRoomDb adds new manager to local room', () => {
@@ -211,4 +258,3 @@ test('subscribeLocalRoom syncs auction start state to subscriber', () => {
 
   unsubscribe();
 });
-

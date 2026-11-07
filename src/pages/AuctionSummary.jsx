@@ -6,7 +6,8 @@ import { IPL_PLAYERS } from '../data/players';
 import { TEAMS } from '../data/teams';
 import { toPng } from 'html-to-image';
 import { supabase } from '../lib/supabase';
-import { db } from '../lib/firebase';
+import { db, rtdb } from '../lib/firebase';
+import { onValue, ref } from 'firebase/database';
 import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import {
   Trophy,
@@ -24,7 +25,9 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SquadRating from '../components/SquadRating';
+import PostAuctionLineups from '../components/PostAuctionLineups';
 import useRoomServer from '../hooks/useRoomServer';
+import { getServerMeta } from '../lib/auctionServers';
 import { isHotspotRoomCode } from '../lib/roomCodes';
 import useDocumentTitle from '../hooks/useDocumentTitle';
 import {
@@ -40,7 +43,14 @@ const AuctionSummary = () => {
   useDocumentTitle(`Auction Summary #${id || ''} | PurseWar`, 'Final squad rosters and auction summary.', true);
   const navigate = useNavigate();
   const { server, ready: serverReady } = useRoomServer(id);
-  const { currentAuction, roomTeams, loading, joinAuction } = useAuction();
+  const {
+    currentAuction,
+    roomTeams,
+    loading,
+    joinAuction,
+    savePostAuctionLineup,
+    revealPostAuctionComparison,
+  } = useAuction();
   const { user } = useAuth();
   
   const [activeTab, setActiveTab] = useState('squads');
@@ -54,6 +64,9 @@ const AuctionSummary = () => {
   const [summaryLoading, setSummaryLoading] = useState(true);
   const [summaryError, setSummaryError] = useState(null);
   const [summaryReloadKey, setSummaryReloadKey] = useState(0);
+  const [postAuctionLineups, setPostAuctionLineups] = useState({});
+  const [lineupsLoading, setLineupsLoading] = useState(true);
+  const [lineupsError, setLineupsError] = useState('');
 
   const teamCardRefs = React.useRef({});
 
@@ -109,6 +122,31 @@ const AuctionSummary = () => {
     const unsub = joinAuction(id, user.uid, server);
     return () => unsub();
   }, [id, user?.uid, joinAuction, server, serverReady]);
+
+  useEffect(() => {
+    if (!serverReady || !id) return;
+    if (server === 'local' || isHotspotRoomCode(id)) {
+      setPostAuctionLineups(currentAuction?.lineups || {});
+      setLineupsLoading(false);
+      setLineupsError('');
+      return;
+    }
+
+    setLineupsLoading(true);
+    return onValue(
+      ref(rtdb, `auctions/${id}/lineups`),
+      (snapshot) => {
+        setPostAuctionLineups(snapshot.val() || {});
+        setLineupsLoading(false);
+        setLineupsError('');
+      },
+      (error) => {
+        console.error('[summary] Failed to load saved lineups', error);
+        setLineupsLoading(false);
+        setLineupsError('Could not load saved lineups. Check Realtime Database permissions and try refreshing.');
+      },
+    );
+  }, [currentAuction?.lineups, id, server, serverReady]);
 
   useEffect(() => {
     if (!id) return;
@@ -194,7 +232,7 @@ const AuctionSummary = () => {
     fetchSummaryFromPersistentStore();
 
     return () => { isMounted = false; };
-  }, [id, summaryReloadKey]);
+  }, [id, server, summaryReloadKey]);
 
   const activeAuction = currentAuction || dbAuction;
   const activeTeams = (roomTeams && roomTeams.length > 0) ? roomTeams : dbTeams;
@@ -299,11 +337,12 @@ const AuctionSummary = () => {
 
         {/* Tab Navigation */}
         <div className="mb-6 sm:mb-12">
-          <div className="bg-white/5 backdrop-blur-3xl p-1 sm:p-1.5 rounded-2xl sm:rounded-[2rem] border border-white/10 grid grid-cols-3 sm:flex sm:justify-center gap-1 sm:gap-2 max-w-full sm:max-w-max mx-auto">
+          <div className="bg-white/5 backdrop-blur-3xl p-1 sm:p-1.5 rounded-2xl sm:rounded-[2rem] border border-white/10 grid grid-cols-2 sm:flex sm:justify-center gap-1 sm:gap-2 max-w-full sm:max-w-max mx-auto">
             {[
               { id: 'squads', label: 'Squads', fullLabel: 'Team Squads', icon: Users },
               { id: 'leaderboard', label: 'Top 5', fullLabel: 'Top Expensive', icon: Trophy },
               { id: 'fantasy', label: 'Ratings', fullLabel: 'Squad Ratings', icon: Zap },
+              { id: 'lineups', label: 'Best XI', fullLabel: 'Best XI Compare', icon: Trophy },
             ].map(tab => (
               <button
                 key={tab.id}
@@ -324,7 +363,27 @@ const AuctionSummary = () => {
 
         {/* Content Section */}
         <AnimatePresence mode="wait">
-          {activeTab === 'leaderboard' ? (
+          {activeTab === 'lineups' ? (
+            <motion.section
+              key="lineups"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <PostAuctionLineups
+                roomId={id}
+                serverLabel={getServerMeta(server).label}
+                user={user}
+                auction={activeAuction}
+                roomTeams={activeTeams}
+                lineups={postAuctionLineups}
+                lineupsLoading={lineupsLoading}
+                lineupsError={lineupsError}
+                saveLineup={savePostAuctionLineup}
+                revealComparison={revealPostAuctionComparison}
+              />
+            </motion.section>
+          ) : activeTab === 'leaderboard' ? (
             <motion.section
               key="leaderboard"
               initial={{ opacity: 0, scale: 0.95 }}

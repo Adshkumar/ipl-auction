@@ -47,6 +47,8 @@ This is the core experience. When the auction starts, every connected user sees 
 
 ### 5. Final Squads & Franchise Ratings
 When all players are sold, the room automatically flushes its data from the active Firebase node into long-term Supabase storage to keep the database lightweight. You can review every team's final squad, switch between list and detailed player cards, and see how your team ranks globally using the built-in **Franchise Strength** evaluation system—which calculates your squad's average rating based on player career stats, form, and experience!
+
+After an auction, each manager can save a best lineup sized for the selected mode: Mega and Classic use 11 players, while Sprint uses 5. The host can reveal a room-wide comparison after every eligible team saves. Scores are based on the average player rating in each selected lineup and are calculated in PurseWar with no external AI service.
 ---
 
 ## Install
@@ -83,6 +85,8 @@ Deploy or run the latest version of PurseWar locally. No complex CLI is required
 Add the required `VITE_FIREBASE_*` and `VITE_SUPABASE_*` values from your local `.env` to the Vercel project's Environment Variables for the Production environment, then redeploy. Vite embeds these values at build time, so changing them requires a new deployment. Do not commit `.env`; add the values in Vercel under Project Settings > Environment Variables.
 
 For Google sign-in, enable the Google provider in Firebase Authentication and add the exact Vercel hostname (`ipl-auction-blush-three.vercel.app`, without `https://`) under Firebase Authentication > Settings > Authorized domains. Add each production or preview hostname where users should be able to sign in.
+
+The post-auction lineup feature adds owner-only lineup writes under each room's Realtime Database `lineups` path. Publish the updated `database.rules.json` rules to every Realtime Database used by the deployment for managers to save lineups. Completed cloud auction room data remains in Realtime Database so managers can save lineups and compare teams after the auction.
 
 ---
 

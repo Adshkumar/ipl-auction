@@ -55,6 +55,11 @@ import {
 } from '../lib/auctionServerDirectory';
 import { isHotspotRoomCode } from '../lib/roomCodes';
 import {
+  getLineupRequirements,
+  getRequiredLineupPlayerCount,
+  getSquadPlayerIds,
+} from '../lib/postAuctionLineups';
+import {
   createLocalRoom,
   joinLocalRoomDb as joinLocalRoomDbEngine,
   subscribeLocalRoom,
@@ -70,6 +75,8 @@ import {
   sendLocalMessage as sendLocalMessageEngine,
   kickLocalPlayer as kickLocalPlayerEngine,
   updateLocalRoomSettings as updateLocalRoomSettingsEngine,
+  saveLocalPostAuctionLineup,
+  revealLocalLineupComparison,
   setSupabaseClient,
 } from '../lib/localAuctionEngine';
 
@@ -677,14 +684,6 @@ export const AuctionProvider = ({ children }) => {
             await updateRtdb(ref(rtdb, `auctions/${roomId}/room`), { status: 'completed' });
             await flushAuctionToFirestore(roomId);
 
-            // Clean up completed room from RTDB after 30 seconds
-            setTimeout(async () => {
-              try {
-                await remove(ref(rtdb, `auctions/${roomId}`));
-              } catch {
-                // Best-effort cleanup: the room may already be gone.
-              }
-            }, 30000);
           }
         } finally {
           // Always release the lock — even if any async step above throws or component unmounts
@@ -1438,6 +1437,66 @@ export const AuctionProvider = ({ children }) => {
     await updateRtdb(ref(rtdb, `auctions/${roomId}/room`), { settings });
   }, [currentAuction?.server]);
 
+  const savePostAuctionLineup = useCallback(async (roomId, teamId, startingXI) => {
+    if (!user?.uid || currentAuction?.id !== roomId || currentAuction.status !== 'completed') {
+      throw new Error('Lineups can only be saved by a manager after the auction is complete.');
+    }
+    if (currentAuction.lineupComparisonRevealed) {
+      throw new Error('Lineups are locked after the host reveals the comparison.');
+    }
+    const { startingCount } = getLineupRequirements(currentAuction.auctionType);
+    if (startingXI.length !== startingCount || new Set(startingXI).size !== startingCount) {
+      throw new Error(`Select ${startingCount} different players for this auction mode.`);
+    }
+
+    const manager = currentAuction.players?.find(
+      (player) => player.id === user.uid && player.team === teamId && !player.isBot,
+    );
+    const teamEntry = roomTeams.find(
+      (entry) => entry.userId === user.uid && entry.teamId === teamId,
+    );
+    if (!manager || !teamEntry) {
+      throw new Error('You can only save a lineup for your own auction team.');
+    }
+
+    const squadIds = new Set(getSquadPlayerIds(teamEntry.squad));
+    if (
+      squadIds.size < getRequiredLineupPlayerCount(currentAuction.auctionType)
+      || startingXI.some((playerId) => !squadIds.has(playerId))
+    ) {
+      throw new Error('Every selected player must be part of your auction squad.');
+    }
+
+    if (currentAuction.server === 'local' || isHotspotRoomCode(roomId)) {
+      return saveLocalPostAuctionLineup(roomId, user.uid, teamId, startingXI);
+    }
+
+    await set(ref(rtdb, `auctions/${roomId}/lineups/${user.uid}`), {
+      teamId,
+      startingXI,
+      updatedAt: serverTimestampRtdb(),
+    });
+  }, [currentAuction, roomTeams, user]);
+
+  const revealPostAuctionComparison = useCallback(async (roomId) => {
+    if (
+      !user?.uid
+      || currentAuction?.id !== roomId
+      || currentAuction.status !== 'completed'
+      || currentAuction.hostId !== user.uid
+    ) {
+      throw new Error('Only the host can reveal the completed auction comparison.');
+    }
+
+    if (currentAuction.server === 'local' || isHotspotRoomCode(roomId)) {
+      return revealLocalLineupComparison(roomId, user.uid);
+    }
+
+    await updateRtdb(ref(rtdb, `auctions/${roomId}/room`), {
+      lineupComparisonRevealed: true,
+    });
+  }, [currentAuction, user]);
+
   const pauseAuction = useCallback(async (roomId) => {
     if (!user || !currentAuction || currentAuction.hostId !== user.uid) return;
     if (isHotspotRoomCode(roomId) || currentAuction?.server === 'local') {
@@ -1501,14 +1560,6 @@ export const AuctionProvider = ({ children }) => {
       timestamp: serverTimestampRtdb()
     });
 
-    // Clean up completed room node from RTDB after 5 seconds to keep RTDB size at 0MB
-    setTimeout(async () => {
-      try {
-        await remove(ref(rtdb, `auctions/${roomId}`));
-      } catch {
-        // Best-effort cleanup: the room may already be gone.
-      }
-    }, 5000);
   }, [user, currentAuction, flushAuctionToFirestore]);
 
 
@@ -1800,6 +1851,8 @@ export const AuctionProvider = ({ children }) => {
     addBotTeam,
     removeBotTeam,
     fillEmptyTeamsWithBots,
+    savePostAuctionLineup,
+    revealPostAuctionComparison,
     getSyncedTime
   };
 

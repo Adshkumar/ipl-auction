@@ -88,6 +88,14 @@
           ".write": "auth != null"
         },
 
+        // Each authenticated manager can save only their own post-auction lineup.
+        "lineups": {
+          ".read": "auth != null",
+          "$userId": {
+            ".write": "auth != null && auth.uid == $userId && root.child('auctions').child($roomId).child('room/status').val() == 'completed' && root.child('auctions').child($roomId).child('room/lineupComparisonRevealed').val() != true"
+          }
+        },
+
         // A user may only write their own presence entry.
         "presence": {
           ".read": "auth != null",

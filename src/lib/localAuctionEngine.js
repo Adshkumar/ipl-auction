@@ -117,6 +117,8 @@ export function mergeLocalRooms(current, incoming) {
     playerOrder: finalPlayerOrder || current.playerOrder,
     players: Array.from(playerMap.values()),
     teams: { ...(current.teams || {}), ...(incoming.teams || {}) },
+    lineups: { ...(current.lineups || {}), ...(incoming.lineups || {}) },
+    lineupComparisonRevealed: !!(current.lineupComparisonRevealed || incoming.lineupComparisonRevealed),
     presences: { ...(current.presences || {}), ...(incoming.presences || {}) },
     messages,
   };
@@ -964,6 +966,32 @@ export function updateLocalRoomSettings(roomId, settings) {
   if (!room) return;
 
   room.settings = { ...(room.settings || {}), ...settings };
+  writeLocalRoom(roomId, room);
+}
+
+export function saveLocalPostAuctionLineup(roomId, userId, teamId, startingXI) {
+  const room = readLocalRoom(roomId);
+  const manager = room?.players?.find((player) => player.id === userId && player.team === teamId);
+  const team = Object.values(room?.teams || {}).find(
+    (teamEntry) => teamEntry.userId === userId && teamEntry.teamId === teamId,
+  );
+  if (!room || room.status !== 'completed' || !manager || !team) {
+    throw new Error('You can only save a lineup for your completed auction team.');
+  }
+
+  room.lineups = {
+    ...(room.lineups || {}),
+    [userId]: { teamId, startingXI, updatedAt: Date.now() },
+  };
+  writeLocalRoom(roomId, room);
+}
+
+export function revealLocalLineupComparison(roomId, userId) {
+  const room = readLocalRoom(roomId);
+  if (!room || room.status !== 'completed' || room.hostId !== userId) {
+    throw new Error('Only the host can reveal the completed auction comparison.');
+  }
+  room.lineupComparisonRevealed = true;
   writeLocalRoom(roomId, room);
 }
 
